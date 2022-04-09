@@ -1,31 +1,61 @@
 import SMTP2GOService from './service';
 import Address from './types/address';
 import { AddressCollection } from './types/addressCollection';
+import { AddressType } from './types/addressType';
+
 export default class mailService extends SMTP2GOService {
-    addresses: AddressCollection;
     body: string;
-    from: Address;
-    to: AddressCollection;
+    fromAddress: Address;
+    toAddress: AddressCollection;
+    ccAddress: AddressCollection;
+    bccAddress: AddressCollection;
+
     constructor() {
         super('mail/send');
-        this.addresses = [];
-        this.to = [];
+        this.toAddress = [];
         this.body = '';
     }
-    addAddress(address: Address) {
-        this.addresses.push(address);
+    addAddress(address: Address, type?: AddressType) {
+        switch (type) {
+            case 'cc':
+                this.ccAddress.push(address);
+                break;
+            case 'bcc':
+                this.bccAddress.push(address);
+                break;
+            case 'to':
+            default:
+                this.toAddress.push(address);
+                break;
+        }
         return this;
     }
     setBody(body: string) {
         this.body = body;
         return this;
     }
-    setFrom(from: Address) {
-        this.from = from;
+    from(from: Address) {
+        this.fromAddress = from;
         return this;
     }
-    getFormattedToAddresses(): Array<string> {
-        return [];
+    to(toAddress: Address | AddressCollection): this {
+        if (Array.isArray(toAddress)) {
+            toAddress.map(address => this.addAddress(address, 'to'));
+        } else {
+            this.addAddress(toAddress, 'to');
+        }
+        return this;
+    }
+    getFormattedAddresses(type: AddressType): Array<string> {
+        switch (type) {
+            case 'cc':
+                return this.ccAddress.map(this.formatAddress);
+            case 'bcc':
+                return this.bccAddress.map(this.formatAddress);
+            case 'to':
+            default:
+                return this.toAddress.map(this.formatAddress);
+        }
     }
     formatAddress(address: Address): string {
         return `${address.name} <${address.email}>`.trim();
@@ -33,9 +63,8 @@ export default class mailService extends SMTP2GOService {
     buildRequestBody(): Record<string, string | boolean> {
         this.requestBody = new Map();
         this.requestBody.set('html_body', this.body);
-        this.requestBody.set('to', this.getFormattedToAddresses());
-        this.requestBody.set('sender', this.formatAddress(this.from));        
+        this.requestBody.set('to', this.getFormattedAddresses('to'));
+        this.requestBody.set('sender', this.formatAddress(this.fromAddress));
         return super.buildRequestBody();
-
     }
 }

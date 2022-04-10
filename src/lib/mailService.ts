@@ -2,18 +2,24 @@ import SMTP2GOService from './service';
 import Address from './types/address';
 import { AddressCollection } from './types/addressCollection';
 import { AddressType } from './types/addressType';
+import Header from './types/header';
+import { HeaderCollection } from './types/headerCollection';
 
 export default class mailService extends SMTP2GOService {
-    body: string;
+    htmlBody: string;
+    textBody: string;
     fromAddress: Address;
     toAddress: AddressCollection;
     ccAddress: AddressCollection;
     bccAddress: AddressCollection;
-
+    subjectLine: string;
+    templateId: string;
+    templateData: JSON;
+    customHeaders: HeaderCollection;
     constructor() {
         super('mail/send');
-        this.toAddress = [];
-        this.body = '';
+        ['toAddress','ccAddress','bccAddress','customHeaders'].forEach(item => this[item] = []);
+
     }
     addAddress(address: Address, type?: AddressType) {
         switch (type) {
@@ -30,9 +36,12 @@ export default class mailService extends SMTP2GOService {
         }
         return this;
     }
-    setBody(body: string) {
-        this.body = body;
+    html(content: string) {
+        this.htmlBody = content;
         return this;
+    }
+    text(content: string) {
+        this.textBody = content;
     }
     from(from: Address) {
         this.fromAddress = from;
@@ -44,6 +53,18 @@ export default class mailService extends SMTP2GOService {
         } else {
             this.addAddress(toAddress, 'to');
         }
+        return this;
+    }
+    headers(header: Header | HeaderCollection): this {
+        if (Array.isArray(header)) {
+            this.customHeaders.push(...header);
+        } else {
+            this.customHeaders.push(header);
+        }
+        return this;
+    }
+    subject(subject: string): this {
+        this.subjectLine = subject;
         return this;
     }
     getFormattedAddresses(type: AddressType): Array<string> {
@@ -62,9 +83,11 @@ export default class mailService extends SMTP2GOService {
     }
     buildRequestBody(): Record<string, string | boolean> {
         this.requestBody = new Map();
-        this.requestBody.set('html_body', this.body);
+        this.requestBody.set('html_body', this.htmlBody);
+        this.requestBody.set('text_body', this.textBody);
         this.requestBody.set('to', this.getFormattedAddresses('to'));
         this.requestBody.set('sender', this.formatAddress(this.fromAddress));
+        this.requestBody.set('subject', this.subjectLine);
         return super.buildRequestBody();
     }
 }

@@ -17,9 +17,8 @@ export default class mailService extends SMTP2GOService {
     templateData: JSON;
     customHeaders: HeaderCollection;
     constructor() {
-        super('mail/send');
-        ['toAddress','ccAddress','bccAddress','customHeaders'].forEach(item => this[item] = []);
-
+        super('email/send');
+        ['toAddress', 'ccAddress', 'bccAddress', 'customHeaders'].forEach(item => this[item] = []);
     }
     addAddress(address: Address, type?: AddressType) {
         switch (type) {
@@ -40,10 +39,11 @@ export default class mailService extends SMTP2GOService {
         this.htmlBody = content;
         return this;
     }
-    text(content: string) {
+    text(content: string): this {
         this.textBody = content;
+        return this;
     }
-    from(from: Address) {
+    from(from: Address): this {
         this.fromAddress = from;
         return this;
     }
@@ -79,7 +79,7 @@ export default class mailService extends SMTP2GOService {
         }
     }
     formatAddress(address: Address): string {
-        return `${address.name} <${address.email}>`.trim();
+        return address.name ? `${address.name} <${address.email}>`.trim() : `<${address.email}>`.trim();
     }
     buildRequestBody(): Record<string, string | boolean> {
         this.requestBody = new Map();

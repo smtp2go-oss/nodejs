@@ -2,11 +2,10 @@ import BuildsRequest from "./buildsrequest";
 import axios from "axios";
 export default class SMTP2GOApiClient {
   apiKey: string;
-  apiUrl: "https://api.smtp2go.com/v3/";
+  apiUrl = "https://api.smtp2go.com/v3/";
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.apiUrl = "https://api.smtp2go.com/v3/";
   }
 
   setApiKey(apiKey: string) {
@@ -28,9 +27,12 @@ export default class SMTP2GOApiClient {
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // console.log(error.message);
+        console.log(error.message);
+        return error.response;
       } else {
-        // console.log(error.message);
+        console.log(error.message);
+        return error.response;
+
       }
     }
   }

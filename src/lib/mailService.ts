@@ -2,6 +2,8 @@ import SMTP2GOService from './service';
 import Address from './types/address';
 import { AddressCollection } from './types/addressCollection';
 import { AddressType } from './types/addressType';
+import Attachment from './types/attachment';
+import { AttachmentCollection } from './types/attachmentCollection';
 import Header from './types/header';
 import { HeaderCollection } from './types/headerCollection';
 
@@ -16,6 +18,7 @@ export default class mailService extends SMTP2GOService {
     templateId: string;
     templateData: JSON;
     customHeaders: HeaderCollection;
+    attachments: AttachmentCollection;
     constructor() {
         super('email/send');
         ['toAddress', 'ccAddress', 'bccAddress', 'customHeaders'].forEach(item => this[item] = []);
@@ -67,6 +70,14 @@ export default class mailService extends SMTP2GOService {
         this.subjectLine = subject;
         return this;
     }
+    attach(attachment: Attachment | AttachmentCollection): this {
+        if (Array.isArray(attachment)) {
+            this.attachments.push(...attachment);
+        } else {
+            this.attachments.push(attachment);
+        }
+        return this;
+    }
     getFormattedAddresses(type: AddressType): Array<string> {
         switch (type) {
             case 'cc':
@@ -88,6 +99,7 @@ export default class mailService extends SMTP2GOService {
         this.requestBody.set('to', this.getFormattedAddresses('to'));
         this.requestBody.set('sender', this.formatAddress(this.fromAddress));
         this.requestBody.set('subject', this.subjectLine);
+        this.requestBody.set('attachments', this.attachments);
         return super.buildRequestBody();
     }
 }

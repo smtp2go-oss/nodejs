@@ -19,7 +19,7 @@ interface BuildsRequest {
      *
      * @return object
      */
-     buildRequestBody(): Record<string, unknown>;
+     buildRequestBody(): Promise<Record<string, string | boolean>>;
 
 }
 export default BuildsRequest;

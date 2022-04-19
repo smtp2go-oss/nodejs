@@ -13,8 +13,9 @@ export default class SMTP2GOApiClient {
   }
 
   async consume(service: BuildsRequest): Promise<any> {
-    const body = service.buildRequestBody();
+    const body = await service.buildRequestBody();
     body["api_key"] = this.apiKey;
+    console.log(body);
     try {
       const { data } = await axios({
         method: service.getMethod(),

@@ -2,6 +2,8 @@ import SMTP2GOService from './service';
 import Address from './types/address';
 import { AddressCollection } from './types/addressCollection';
 import { AddressType } from './types/addressType';
+import Attachment from './types/attachment';
+import { AttachmentCollection } from './types/attachmentCollection';
 import Header from './types/header';
 import { HeaderCollection } from './types/headerCollection';
 export default class mailService extends SMTP2GOService {
@@ -15,6 +17,7 @@ export default class mailService extends SMTP2GOService {
     templateId: string;
     templateData: JSON;
     customHeaders: HeaderCollection;
+    attachments: AttachmentCollection;
     constructor();
     addAddress(address: Address, type?: AddressType): this;
     html(content: string): this;
@@ -23,7 +26,8 @@ export default class mailService extends SMTP2GOService {
     to(toAddress: Address | AddressCollection): this;
     headers(header: Header | HeaderCollection): this;
     subject(subject: string): this;
+    attach(attachment: Attachment | AttachmentCollection | string): this;
     getFormattedAddresses(type: AddressType): Array<string>;
     formatAddress(address: Address): string;
-    buildRequestBody(): Record<string, string | boolean>;
+    buildRequestBody(): Promise<Record<string, string | boolean>>;
 }

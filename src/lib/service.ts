@@ -7,7 +7,7 @@ class SMTP2GOService implements BuildsRequest {
 
   constructor(
     endpoint: string,
-    requestBody?: Map<string, string|boolean>,
+    requestBody?: Map<string, string | boolean>,
     method?: Method
   ) {
     this.endpoint = endpoint;
@@ -22,9 +22,9 @@ class SMTP2GOService implements BuildsRequest {
   getEndpoint(): string {
     return this.endpoint;
   }
-  
-  buildRequestBody(): Record<string, string|boolean> {    
-    return Object.fromEntries(this.requestBody);
+
+  async buildRequestBody(): Promise<Record<string, string | boolean>> {
+    return await Promise.resolve(Object.fromEntries(this.requestBody));
   }
 }
 export default SMTP2GOService;

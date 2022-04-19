@@ -15,7 +15,6 @@ export default class SMTP2GOApiClient {
   async consume(service: BuildsRequest): Promise<any> {
     const body = await service.buildRequestBody();
     body["api_key"] = this.apiKey;
-    console.log(body);
     try {
       const { data } = await axios({
         method: service.getMethod(),
@@ -28,10 +27,10 @@ export default class SMTP2GOApiClient {
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.message);
+        console.error(error.message);
         return error.response;
       } else {
-        console.log(error.message);
+        console.error(error.message);
         return error.response;
 
       }

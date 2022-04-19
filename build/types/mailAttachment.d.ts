@@ -10,4 +10,9 @@ export default class MailAttachment implements Attachment {
      * @returns Promise<string>
      */
     getFileBlob(): Promise<string>;
+    forSend(): {
+        filename: string;
+        fileblob: string;
+        mimetype: string;
+    };
 }

@@ -1,11 +1,11 @@
-import SMTP2GOService from './service';
-import Address from './types/address';
-import { AddressCollection } from './types/addressCollection';
-import { AddressType } from './types/addressType';
-import Attachment from './types/attachment';
-import { AttachmentCollection } from './types/attachmentCollection';
-import Header from './types/header';
-import { HeaderCollection } from './types/headerCollection';
+import SMTP2GOService from "./service";
+import Address from "./types/address";
+import { AddressCollection } from "./types/addressCollection";
+import { AddressType } from "./types/addressType";
+import Attachment from "./types/attachment";
+import { AttachmentCollection } from "./types/attachmentCollection";
+import Header from "./types/header";
+import { HeaderCollection } from "./types/headerCollection";
 export default class mailService extends SMTP2GOService {
     htmlBody: string;
     textBody: string;

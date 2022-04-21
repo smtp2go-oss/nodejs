@@ -32,7 +32,6 @@ export default class SMTP2GOApiClient {
       } else {
         console.error(error.message);
         return error.response;
-
       }
     }
   }

@@ -5,11 +5,12 @@ export default class MailAttachment implements Attachment {
     fileblob: string;
     mimetype: string;
     constructor(filepath: string);
+    setFileBlob(blob: string): this;
     /**
      * Get the base64 encoded file content
      * @returns Promise<string>
      */
-    getFileBlob(): Promise<string>;
+    readFileBlob(): Promise<this>;
     forSend(): {
         filename: string;
         fileblob: string;

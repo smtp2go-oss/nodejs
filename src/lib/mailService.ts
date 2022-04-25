@@ -17,9 +17,10 @@ export default class mailService extends SMTP2GOService {
   bccAddress: AddressCollection;
   subjectLine: string;
   templateId: string;
-  templateData: JSON;
+  templateData: Map<string, string>;
   customHeaders: HeaderCollection;
   attachments: AttachmentCollection;
+  inlines: AttachmentCollection;
   constructor() {
     super("email/send");
     [
@@ -28,6 +29,7 @@ export default class mailService extends SMTP2GOService {
       "bccAddress",
       "customHeaders",
       "attachments",
+      "inlines",
     ].forEach((item) => (this[item] = []));
   }
   addAddress(address: Address, type?: AddressType) {
@@ -65,6 +67,22 @@ export default class mailService extends SMTP2GOService {
     }
     return this;
   }
+  cc(toAddress: Address | AddressCollection): this {
+    if (Array.isArray(toAddress)) {
+      toAddress.map((address) => this.addAddress(address, "cc"));
+    } else {
+      this.addAddress(toAddress, "cc");
+    }
+    return this;
+  }
+  bcc(toAddress: Address | AddressCollection): this {
+    if (Array.isArray(toAddress)) {
+      toAddress.map((address) => this.addAddress(address, "bcc"));
+    } else {
+      this.addAddress(toAddress, "bcc");
+    }
+    return this;
+  }
   headers(header: Header | HeaderCollection): this {
     if (Array.isArray(header)) {
       this.customHeaders.push(...header);
@@ -85,7 +103,12 @@ export default class mailService extends SMTP2GOService {
     } else {
       this.attachments.push(attachment);
     }
-
+    return this;
+  }
+  inline(cid: string, filepath: string): this {
+    const inlineAttachment = new MailAttachment(filepath);
+    inlineAttachment.filename = cid;
+    this.inlines.push(inlineAttachment);
     return this;
   }
   getFormattedAddresses(type: AddressType): Array<string> {
@@ -107,22 +130,48 @@ export default class mailService extends SMTP2GOService {
   async buildRequestBody(): Promise<Record<string, string | boolean>> {
     this.requestBody = new Map();
     this.requestBody.set("html_body", this.htmlBody);
-    this.requestBody.set("text_body", this.textBody || "");
-    this.requestBody.set("to", this.getFormattedAddresses("to"));
+    if (this.textBody) {
+      this.requestBody.set("text_body", this.textBody || "");
+    }
+    if (this.toAddress.length) {
+      this.requestBody.set("to", this.getFormattedAddresses("to"));
+    }
+    if (this.ccAddress.length) {
+      this.requestBody.set("cc", this.getFormattedAddresses("cc"));
+    }
+    if (this.bccAddress.length) {
+      this.requestBody.set("bcc", this.getFormattedAddresses("bcc"));
+    }
+
     this.requestBody.set("sender", this.formatAddress(this.fromAddress));
+
     this.requestBody.set("subject", this.subjectLine);
-    if (this.attachments.length) {
+
+    if (this.templateId) {
+      this.requestBody.set("template_id", this.templateId);
+    }
+    if (this.templateData?.size > 0) {
+      this.requestBody.set("template_data", this.templateData);
+    }
+
+    if (this.attachments.length || this.inlines.length) {
       const promises: any[] = [];
-      this.attachments.forEach((attachment: MailAttachment) => {
-        promises.push(attachment.getFileBlob());
+      ["attachments", "inlines"].forEach((attachmentType) => {
+        this[attachmentType].forEach((attachment: MailAttachment) => {
+          promises.push(attachment.readFileBlob());
+        });
       });
       await Promise.all(promises).then(() => {
-        this.requestBody.set(
-          "attachments",
-          this.attachments.map((attachment: MailAttachment) =>
-            attachment.forSend()
-          )
-        );
+        ["attachments", "inlines"].forEach((attachmentType) => {
+          if (this[attachmentType].length) {
+            this.requestBody.set(
+              attachmentType,
+              this[attachmentType].map((attachment: MailAttachment) =>
+                attachment.forSend()
+              )
+            );
+          }
+        });
       });
     }
     return await super.buildRequestBody();

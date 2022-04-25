@@ -2,10 +2,10 @@ import SMTP2GOApiClient from "./client";
 import SMTP2GOService from "./service";
 import MailService from "./mailService";
 import MailAttachment from "./mailAttachment";
+import InlineAttachment from "./inlineAttachment";
 export { SMTP2GOApiClient as ApiClient };
 export { SMTP2GOService as Service };
-export { MailService };
-export { MailAttachment };
+export { MailService, MailAttachment, InlineAttachment };
 export default function SMTP2GOApi(apiKey: string): {
     service: (endpoint: string) => SMTP2GOService;
     mail: () => MailService;

@@ -11,18 +11,26 @@ export default class MailAttachment implements Attachment {
     this.filepath = filepath;
     this.mimetype = mime.lookup(this.filepath);
     this.filename = path.basename(this.filepath);
+    this.fileblob = "";
+  }
+  setFileBlob(blob: string): this {
+    this.fileblob = blob;
+    return this;
   }
   /**
    * Get the base64 encoded file content
    * @returns Promise<string>
    */
-  async getFileBlob(): Promise<string> {
+  async readFileBlob(): Promise<this> {
+    if (this.fileblob != "") {
+      return this;
+    }
     this.fileblob = await fs
       .readFile(this.filepath, { encoding: "base64" })
       .catch((err: any) => {
         throw err;
       });
-    return this.fileblob;
+    return this;
   }
   forSend() {
     return {

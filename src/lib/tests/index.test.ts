@@ -4,7 +4,7 @@ require('dotenv').config();
 
 it('The service forms arguments to the api correctly', async () => {
   const s = new Service('users/email_bounces', new Map([['test', 'param']]));
-  const b = s.buildRequestBody();
+  const b = await s.buildRequestBody();
   expect(b.test).toBe('param');
 });
 

@@ -147,6 +147,10 @@ export default class mailService extends SMTP2GOService {
 
     this.requestBody.set("subject", this.subjectLine);
 
+    if (this.customHeaders.length) {
+      this.requestBody.set('custom_headers', this.customHeaders);
+    }
+
     if (this.templateId) {
       this.requestBody.set("template_id", this.templateId);
     }

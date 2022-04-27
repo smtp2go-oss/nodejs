@@ -1,4 +1,6 @@
 import { MailService } from '../index';
+import SMTP2GOApi from '../index';
+
 it('Adds an address', () => {
     const mailService = new MailService();
     mailService.addAddress({ email: 'test@email.local' });
@@ -14,6 +16,34 @@ it('Formats an address', () => {
 it('Accepts a collection of "to" addresses', () => {
     const mailService = new MailService();
     expect(mailService.to([{email:'address1@test.local'},{email:'address2@test.local',name:'Steve'}])).toBe(mailService);
-    expect(mailService.toAddress.length).toBe(2);
-        
+    expect(mailService.toAddress.length).toBe(2);        
 });
+
+it('Accepts a collection of custom headers', () => {
+    const mailService = new MailService();
+    mailService.headers({name:'X-SENT-BY',value:'SMPT2GONODE'});
+    expect(mailService.customHeaders.length).toBe(1);        
+    mailService.headers({name:'X-ANOTHER-HEADER',value:'!!'});
+    expect(mailService.customHeaders.length).toBe(2);
+});
+
+it('Builds an email request', async () => {
+    const api = SMTP2GOApi(process.env.APIKEY);
+
+    const mail = api.mail()
+        .to({ email: 'kris@2050.nz' })
+        .cc({ email: 'kris.r.johansen@icloud.com' })
+        .from({ email: 'sender@2050.nz' })
+        .subject('Testing')
+        .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>')
+        .attach(require('path').resolve(__dirname, './files/test.txt'))
+        .inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'))
+
+    const requestBody = await mail.buildRequestBody();
+    expect(requestBody).toHaveProperty('html_body');
+    expect(requestBody).not.toHaveProperty('text_body');
+    expect(requestBody).toHaveProperty('attachments');
+    expect(requestBody).toHaveProperty('inlines');
+
+    // api.client().consume(mail);
+})

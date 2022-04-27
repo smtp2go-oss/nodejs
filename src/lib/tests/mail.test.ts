@@ -9,21 +9,48 @@ it('Adds an address', () => {
 
 it('Formats an address', () => {
     const mailService = new MailService();
-    mailService.addAddress({ email: 'test@email.local' });
     expect(mailService.formatAddress({ email: 'test@email.local', name: 'steve' })).toBe('steve <test@email.local>');
+
 });
 
 it('Accepts a collection of "to" addresses', () => {
     const mailService = new MailService();
-    expect(mailService.to([{email:'address1@test.local'},{email:'address2@test.local',name:'Steve'}])).toBe(mailService);
-    expect(mailService.toAddress.length).toBe(2);        
+    expect(mailService.to([{ email: 'address1@test.local' }, { email: 'address2@test.local', name: 'Steve' }])).toBe(mailService);
+    expect(mailService.toAddress.length).toBe(2);
+
 });
+
+it('Formats a type of address', () => {
+    const mailService = new MailService();
+    mailService.addAddress({ email: 'test@test.local', name: 'Mary' }, 'to');
+    expect(mailService.getFormattedAddresses('to')[0]).toBe('Mary <test@test.local>');
+
+    mailService.addAddress({ email: 'test@test.local', name: 'Mary' }, 'cc');
+    expect(mailService.getFormattedAddresses('cc')[0]).toBe('Mary <test@test.local>');
+
+    mailService.addAddress({ email: 'test@test.local', name: 'Mary' }, 'bcc');
+    expect(mailService.getFormattedAddresses('bcc')[0]).toBe('Mary <test@test.local>');
+
+})
+
+it('Accepts a collection of "cc" addresses', () => {
+    const mailService = new MailService();
+    expect(mailService.cc([{ email: 'address1@test.local' }, { email: 'address2@test.local', name: 'Steve' }])).toBe(mailService);
+    expect(mailService.ccAddress.length).toBe(2);
+});
+
+it('Accepts a collection of "bcc" addresses', () => {
+    const mailService = new MailService();
+    expect(mailService.bcc([{ email: 'address1@test.local' }, { email: 'address2@test.local', name: 'Steve' }])).toBe(mailService);
+    expect(mailService.bccAddress.length).toBe(2);
+});
+
 
 it('Accepts a collection of custom headers', () => {
     const mailService = new MailService();
-    mailService.headers({name:'X-SENT-BY',value:'SMPT2GONODE'});
-    expect(mailService.customHeaders.length).toBe(1);        
-    mailService.headers({name:'X-ANOTHER-HEADER',value:'!!'});
+    mailService.headers({ name: 'X-SENT-BY', value: 'SMPT2GONODE' });
+    expect(mailService.customHeaders.length).toBe(1);
+    mailService.headers({ name: 'X-ANOTHER-HEADER', value: '!!' });
     expect(mailService.customHeaders.length).toBe(2);
 });
 

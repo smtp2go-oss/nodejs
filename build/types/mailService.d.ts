@@ -24,9 +24,11 @@ export default class mailService extends SMTP2GOService {
     html(content: string): this;
     text(content: string): this;
     from(from: Address): this;
+    template(templateId: string, templateData: Map<string, string>): this;
     to(toAddress: Address | AddressCollection): this;
     cc(toAddress: Address | AddressCollection): this;
     bcc(toAddress: Address | AddressCollection): this;
+    _addAddressOfType(emailAddress: Address | AddressCollection, t: AddressType): this;
     headers(header: Header | HeaderCollection): this;
     subject(subject: string): this;
     attach(attachment: Attachment | AttachmentCollection | string): this;

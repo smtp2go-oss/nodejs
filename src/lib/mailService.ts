@@ -59,27 +59,28 @@ export default class mailService extends SMTP2GOService {
     this.fromAddress = from;
     return this;
   }
+  template(templateId: string, templateData: Map<string, string>): this {
+    this.templateId = templateId;
+    this.templateData = templateData;
+    return this;
+  }
   to(toAddress: Address | AddressCollection): this {
-    if (Array.isArray(toAddress)) {
-      toAddress.map((address) => this.addAddress(address, "to"));
-    } else {
-      this.addAddress(toAddress, "to");
-    }
+    this._addAddressOfType(toAddress, "to");
     return this;
   }
   cc(toAddress: Address | AddressCollection): this {
-    if (Array.isArray(toAddress)) {
-      toAddress.map((address) => this.addAddress(address, "cc"));
-    } else {
-      this.addAddress(toAddress, "cc");
-    }
+    this._addAddressOfType(toAddress, "cc");
     return this;
   }
   bcc(toAddress: Address | AddressCollection): this {
-    if (Array.isArray(toAddress)) {
-      toAddress.map((address) => this.addAddress(address, "bcc"));
+    this._addAddressOfType(toAddress, "bcc");
+    return this;
+  }
+  _addAddressOfType(emailAddress: Address | AddressCollection, t: AddressType) {
+    if (Array.isArray(emailAddress)) {
+      emailAddress.map((address) => this.addAddress(address, t));
     } else {
-      this.addAddress(toAddress, "bcc");
+      this.addAddress(emailAddress, t);
     }
     return this;
   }
@@ -112,15 +113,7 @@ export default class mailService extends SMTP2GOService {
     return this;
   }
   getFormattedAddresses(type: AddressType): Array<string> {
-    switch (type) {
-      case "cc":
-        return this.ccAddress.map(this.formatAddress);
-      case "bcc":
-        return this.bccAddress.map(this.formatAddress);
-      case "to":
-      default:
-        return this.toAddress.map(this.formatAddress);
-    }
+    return this[type + "Address"].map(this.formatAddress);
   }
   formatAddress(address: Address): string {
     return address.name
@@ -148,7 +141,7 @@ export default class mailService extends SMTP2GOService {
     this.requestBody.set("subject", this.subjectLine);
 
     if (this.customHeaders.length) {
-      this.requestBody.set('custom_headers', this.customHeaders);
+      this.requestBody.set("custom_headers", this.customHeaders);
     }
 
     if (this.templateId) {

@@ -116,7 +116,7 @@ export default class mailService extends SMTP2GOService {
     return this[type + "Address"].map(this.formatAddress);
   }
   formatAddress(address: Address): string {
-    return address.name
+    return address?.name
       ? `${address.name} <${address.email}>`.trim()
       : `<${address.email}>`.trim();
   }
@@ -128,6 +128,8 @@ export default class mailService extends SMTP2GOService {
     }
     if (this.toAddress.length) {
       this.requestBody.set("to", this.getFormattedAddresses("to"));
+    } else {
+      throw Error('At least one "to" address is required.');
     }
     if (this.ccAddress.length) {
       this.requestBody.set("cc", this.getFormattedAddresses("cc"));
@@ -136,7 +138,11 @@ export default class mailService extends SMTP2GOService {
       this.requestBody.set("bcc", this.getFormattedAddresses("bcc"));
     }
 
-    this.requestBody.set("sender", this.formatAddress(this.fromAddress));
+    if (this.fromAddress?.email) {
+      this.requestBody.set("sender", this.formatAddress(this.fromAddress));
+    } else {
+      throw Error("A from email address is required.");
+    }
 
     this.requestBody.set("subject", this.subjectLine);
 

@@ -1,7 +1,7 @@
 {
-  "name": "@smtp2go/smtp2go-api",
+  "name": "@smtp2go/smtp2go-nodejs",
   "version": "0.0.1",
-  "description": "Library for interacting with the SMTP2GO API",
+  "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "build/index.js",
   "types": "build/types/index.d.ts",
   "scripts": {
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/smtp2go/ts-library-boilerplate-basic"
+    "url": "https://github.com/smtp2go-oss/nodejs"
   },
-  "author": "SMTP2GO <hello@smtp2go.com> (https://github.com/smtp2go)",
+  "author": "SMTP2GO <hello@smtp2go.com> (https://github.com/smtp2go-oss)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/smtp2go/ts-library-boilerplate-basic/issues"
+    "url": "https://github.com/smtp2go-oss/nodejs/issues"
   },
-  "homepage": "https://github.com/smtp2go/ts-library-boilerplate-basic",
+  "homepage": "https://github.com/smtp2go-oss/nodejs",
   "keywords": [
     "smtp",
     "mail",

@@ -31,7 +31,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'build'),
-    library: "SMTP2GOAPI",
+    library: "smtp2go-nodejs",
     libraryTarget: 'umd',
     clean: true
   },

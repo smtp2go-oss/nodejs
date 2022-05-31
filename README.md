@@ -5,7 +5,7 @@ This library provides a simple way to send email via the SMTP2GO API and also ac
 ### Example Code - Sending an Email
 
 ```javascript
-import SMTP2GOApi from '@smtp2go/smtp2go-nodejs';
+import SMTP2GOApi from 'smtp2go-nodejs';
 
 const api = SMTP2GOApi(process.env.APIKEY);
 

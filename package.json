@@ -1,6 +1,6 @@
 {
-  "name": "@smtp2go/smtp2go-nodejs",
-  "version": "0.0.1",
+  "name": "smtp2go-nodejs",
+  "version": "0.0.0",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "build/index.js",
   "types": "build/types/index.d.ts",
@@ -85,5 +85,13 @@
   "dependencies": {
     "axios": "^0.26.1",
     "mime-types": "^2.1.35"
+  },
+  "np": {
+    "yarn": false,
+    "contents": "build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

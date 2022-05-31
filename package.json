@@ -1,6 +1,6 @@
 {
   "name": "smtp2go-nodejs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "build/index.js",
   "types": "build/types/index.d.ts",

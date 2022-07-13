@@ -1,6 +1,6 @@
 /*!
  * 
- *   smtp2go-nodejs v0.0.0
+ *   smtp2go-nodejs v0.0.1
  *   https://github.com/smtp2go-oss/nodejs
  *
  *   Copyright (c) SMTP2GO (https://github.com/smtp2go-oss) and project contributors.

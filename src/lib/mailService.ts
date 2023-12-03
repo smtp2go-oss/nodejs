@@ -8,6 +8,23 @@ import { AttachmentCollection } from "./types/attachmentCollection";
 import Header from "./types/header";
 import { HeaderCollection } from "./types/headerCollection";
 
+interface IAddressTypes {
+  toAddress: AddressCollection;
+  ccAddress: AddressCollection;
+  bccAddress: AddressCollection;
+}
+interface ICollections {
+  customHeaders: HeaderCollection | Array<Header>;
+  attachments: AttachmentCollection | Array<Attachment>;
+  inlines: AttachmentCollection | Array<Attachment>;
+  toAddress: AddressCollection | Array<Address>;
+  ccAddress: AddressCollection | Array<Address>;
+  bccAddress: AddressCollection | Array<Address>;
+}
+interface IAttachmentTypes {
+  attachments: AttachmentCollection;
+  inlines: AttachmentCollection;
+}
 export default class mailService extends SMTP2GOService {
   htmlBody: string;
   textBody: string;
@@ -30,7 +47,7 @@ export default class mailService extends SMTP2GOService {
       "customHeaders",
       "attachments",
       "inlines",
-    ].forEach((item) => (this[item] = []));
+    ].forEach((item) => (this[item as keyof ICollections] = []));
   }
   addAddress(address: Address, type?: AddressType) {
     switch (type) {
@@ -113,7 +130,7 @@ export default class mailService extends SMTP2GOService {
     return this;
   }
   getFormattedAddresses(type: AddressType): Array<string> {
-    return this[type + "Address"].map(this.formatAddress);
+    return this[type + "Address" as keyof IAddressTypes].map(this.formatAddress);
   }
   formatAddress(address: Address): string {
     return address?.name
@@ -160,16 +177,16 @@ export default class mailService extends SMTP2GOService {
     if (this.attachments.length || this.inlines.length) {
       const promises: any[] = [];
       ["attachments", "inlines"].forEach((attachmentType) => {
-        this[attachmentType].forEach((attachment: MailAttachment) => {
+        this[attachmentType as keyof IAttachmentTypes].forEach((attachment: MailAttachment) => {
           promises.push(attachment.readFileBlob());
         });
       });
       await Promise.all(promises).then(() => {
         ["attachments", "inlines"].forEach((attachmentType) => {
-          if (this[attachmentType].length) {
+          if (this[attachmentType as keyof ICollections].length) {
             this.requestBody.set(
               attachmentType,
-              this[attachmentType].map((attachment: MailAttachment) =>
+              this[attachmentType as keyof IAttachmentTypes].map((attachment: MailAttachment) =>
                 attachment.forSend()
               )
             );

@@ -55,8 +55,8 @@ it('Accepts a collection of custom headers', () => {
 });
 
 it('Builds an email request', async () => {
-    const api = SMTP2GOApi(process.env.APIKEY);
-
+    const api = SMTP2GOApi("API-KEY");
+    expect(api.client().apiKey).toBe("API-KEY");
     const mail = api.mail()
         .to({ email: 'kris@2050.nz' })
         .cc({ email: 'kris.r.johansen@icloud.com' })
@@ -68,9 +68,11 @@ it('Builds an email request', async () => {
 
     const requestBody = await mail.buildRequestBody();
     expect(requestBody).toHaveProperty('html_body');
+
     expect(requestBody).not.toHaveProperty('text_body');
     expect(requestBody).toHaveProperty('attachments');
     expect(requestBody).toHaveProperty('inlines');
 
-    // api.client().consume(mail);
+    // const res = await api.client().consume(mail);
+    // expect(res).toHaveProperty('request_id');
 })

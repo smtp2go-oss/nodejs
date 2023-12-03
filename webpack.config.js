@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const PrettierPlugin = require("prettier-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const getPackageJson = require('./scripts/getPackageJson');
 const nodeExternals = require('webpack-node-externals');
@@ -55,7 +54,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new PrettierPlugin(),
+    // new PrettierPlugin(),
 
     new webpack.BannerPlugin(banner)
   ],

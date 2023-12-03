@@ -27,10 +27,8 @@ export default class SMTP2GOApiClient {
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error(error.message);
         return error.response;
       } else {
-        console.error(error.message);
         return error.response;
       }
     }

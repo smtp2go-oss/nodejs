@@ -1,18 +1,24 @@
 {
-    "compilerOptions": {
-      "noImplicitAny": true,
-      "outDir": "build/types",
-      "module": "esnext",
-      "target": "es5",
-      "allowJs": true,
-      "sourceMap": true,
-      "declaration": true,
-      "emitDeclarationOnly": true,
-      "suppressImplicitAnyIndexErrors": true,
-      "skipLibCheck": true,
-      "lib": ["es2019"],
-      "moduleResolution": "node",
-    },
-    "include": ["src/lib"],
-    "exclude": ["src/lib/**/tests"],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "outDir": "build/types",
+    "module": "esnext",
+    "target": "es5",
+    "allowJs": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "ignoreDeprecations": "5.0",
+    "skipLibCheck": true,
+    "lib": [
+      "es2019"
+    ],
+    "moduleResolution": "node",
+  },
+  "include": [
+    "src/lib"
+  ],
+  "exclude": [
+    "src/lib/**/tests"
+  ],
 }

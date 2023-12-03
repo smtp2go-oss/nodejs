@@ -33,7 +33,7 @@
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/plugin-transform-class-properties": "^7.16.0",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/plugin-transform-typescript": "^7.16.8",
     "@babel/polyfill": "^7.12.1",
@@ -48,13 +48,7 @@
     "dotenv": "^16.0.0",
     "eslint": "^7.32.0",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
-    "mini-css-extract-plugin": "^2.6.0",
-    "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "prettier": "^2.5.1",
-    "prettier-webpack-plugin": "^1.2.0",
-    "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.2",
@@ -67,7 +61,8 @@
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/scripts/testMock.js",
-      "\\.(css|less)$": "<rootDir>/scripts/testMock.js"
+      "\\.(css|less)$": "<rootDir>/scripts/testMock.js",
+      "axios": "axios/dist/node/axios.cjs"
     },
     "moduleFileExtensions": [
       "web.js",
@@ -83,7 +78,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.6.2",
     "mime-types": "^2.1.35"
   },
   "np": {

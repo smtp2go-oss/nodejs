@@ -1,1 +1,1 @@
-export declare type AddressType = 'to' | 'cc' | 'bcc';
+export type AddressType = 'to' | 'cc' | 'bcc';

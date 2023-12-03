@@ -1,2 +1,2 @@
 import Header from "./header";
-export declare type HeaderCollection = Array<Header>;
+export type HeaderCollection = Array<Header>;

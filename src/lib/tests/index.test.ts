@@ -14,5 +14,15 @@ it('Makes a valid request to the API', async () => {
   expect(res.data).toHaveProperty('emails');
 });
 
+it('Allows custom headers to be set', async () => {
+  const c = new ApiClient(process.env.APIKEY);
+  c.setHeaders({ 'X-Custom-Header': 'test' });
+  expect(c.getHeaders()).toHaveProperty('X-Custom-Header', 'test');
+});
 
+it('Does not allow certain headers to be overwritten', async () => {
+  const c = new ApiClient(process.env.APIKEY);
+  c.setHeaders({ 'X-Smtp2go-Api': 'test' });
+  expect(c.getHeaders()).toHaveProperty('X-Smtp2go-Api', 'smtp2go-nodejs');
+});
 

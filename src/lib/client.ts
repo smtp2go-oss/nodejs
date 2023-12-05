@@ -1,8 +1,10 @@
 import BuildsRequest from "./buildsrequest";
 import axios from "axios";
+import {version} from '../../package.json';
 export default class SMTP2GOApiClient {
   apiKey: string;
   apiUrl = "https://api.smtp2go.com/v3/";
+  headers: Record<string, string> = {};
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -10,6 +12,18 @@ export default class SMTP2GOApiClient {
 
   setApiKey(apiKey: string) {
     this.apiKey = apiKey;
+  }
+  setHeaders(headers: any) {
+    this.headers = headers;
+  }
+  getHeaders() {
+    const presetHeaders = {
+      "Content-Type": "application/json",
+      'X-Smtp2go-Api': 'smtp2go-nodejs',
+      'X-Smtp2go-Api-Version': version,
+    };
+    //combine preset headers with custom headers but don't allow custom headers to overwrite preset headers
+    return { ...this.headers, ...presetHeaders };
   }
 
   async consume(service: BuildsRequest): Promise<any> {
@@ -19,9 +33,7 @@ export default class SMTP2GOApiClient {
       const { data } = await axios({
         method: service.getMethod(),
         url: this.apiUrl + service.getEndpoint(),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: this.getHeaders(),
         data: body,
       });
       return data;

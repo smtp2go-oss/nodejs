@@ -18,9 +18,9 @@ const mailService = api.mail()
     .cc({ email: 'cc@address.dev' })
     .from({ email: 'from@address.dev' })
     .subject('Testing')
-    .html(```<h1>Hello World</h1>
+    .html(`<h1>Hello World</h1>
     <img src="cid:a-cat"/>
-    <p>This is a test html email!</p>```)
+    <p>This is a test html email!</p>`)
     .attach(require('path').resolve(__dirname, './files/test.txt'))
     .inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'));
 

@@ -58,9 +58,9 @@ it('Builds an email request', async () => {
     const api = SMTP2GOApi("API-KEY");
     expect(api.client().apiKey).toBe("API-KEY");
     const mail = api.mail()
-        .to({ email: 'kris@2050.nz' })
-        .cc({ email: 'kris.r.johansen@icloud.com' })
-        .from({ email: 'sender@2050.nz' })
+        .to({ email: 'nobody@nowhere.com' })
+        .cc({ email: 'bob@smith.com' })
+        .from({ email: 'sender@test.nz' })
         .subject('Testing')
         .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>')
         .attach(require('path').resolve(__dirname, './files/test.txt'))
@@ -73,6 +73,25 @@ it('Builds an email request', async () => {
     expect(requestBody).toHaveProperty('attachments');
     expect(requestBody).toHaveProperty('inlines');
 
-    // const res = await api.client().consume(mail);
-    // expect(res).toHaveProperty('request_id');
-})
+});
+
+it('Builds an email using a template', async () => {
+    const api = SMTP2GOApi("API-KEY");
+    expect(api.client().apiKey).toBe("API-KEY");
+    const mail = api.mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .cc({ email: 'bob@smith.com' })
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing');
+
+    const templateData = new Map<string, string>();
+    templateData.set('test_key1', 'test_replacement1');
+    templateData.set('test_key2', 'test_replacement2');
+
+    mail.template("123456", templateData);
+    const requestBody = await mail.buildRequestBody();
+    expect(requestBody).toHaveProperty('template_id', '123456');
+    expect(requestBody).toHaveProperty('template_data', { test_key1: 'test_replacement1', test_key2: 'test_replacement2' });
+
+});
+

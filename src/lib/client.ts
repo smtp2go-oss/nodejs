@@ -1,6 +1,6 @@
 import BuildsRequest from "./buildsrequest";
 import axios from "axios";
-import {version} from '../../package.json';
+import packageInfo from '../../package.json';
 export default class SMTP2GOApiClient {
   apiKey: string;
   apiUrl = "https://api.smtp2go.com/v3/";
@@ -20,7 +20,7 @@ export default class SMTP2GOApiClient {
     const presetHeaders = {
       "Content-Type": "application/json",
       'X-Smtp2go-Api': 'smtp2go-nodejs',
-      'X-Smtp2go-Api-Version': version,
+      'X-Smtp2go-Api-Version': packageInfo.version,
     };
     //combine preset headers with custom headers but don't allow custom headers to overwrite preset headers
     return { ...this.headers, ...presetHeaders };
@@ -38,11 +38,7 @@ export default class SMTP2GOApiClient {
       });
       return data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return error.response;
-      } else {
-        return error.response;
-      }
+      return error.response;
     }
   }
 }

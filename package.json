@@ -1,9 +1,9 @@
 {
   "name": "smtp2go-nodejs",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "./build/index.js",
-  "types": "./build/src/lib/types/index.d.ts",
+  "types": "./build/src/lib/index.d.ts",
   "exports": {
     ".": {
       "require": "./build/index.js",
@@ -11,6 +11,7 @@
       "types": "./build/src/lib/index.d.ts"
     }
   },
+  "files": ["build"],
   "scripts": {
     "start": "webpack serve --config webpack.config.demo.js",
     "build": "webpack && tsc",

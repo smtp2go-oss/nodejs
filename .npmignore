@@ -9,6 +9,7 @@
 /docs
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local
@@ -34,3 +35,6 @@ README.md
 .eslintrc.json
 webpack.config.js
 babel.config.js
+release-dev-tag.sh
+tsconfig.json
+webpack.config.demo.js

@@ -171,7 +171,7 @@ export default class mailService extends SMTP2GOService {
       this.requestBody.set("template_id", this.templateId);
     }
     if (this.templateData?.size > 0) {
-      this.requestBody.set("template_data", this.templateData);
+      this.requestBody.set("template_data", Object.fromEntries(this.templateData));
     }
 
     if (this.attachments.length || this.inlines.length) {

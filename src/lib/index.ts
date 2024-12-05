@@ -21,3 +21,14 @@ export default function SMTP2GOApi(apiKey: string) {
     },
   };
 }
+
+
+export * from './types/address';
+export * from './types/addressCollection';
+export * from './types/addressType';
+export * from './types/attachment';
+export * from './types/attachmentCollection';
+export * from './types/header'; 
+export * from './types/headerCollection';
+
+

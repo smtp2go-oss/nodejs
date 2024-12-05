@@ -19,7 +19,6 @@
   },
   "include": [
     "src/lib",
-    "src/demo"
   ],
   "exclude": [
     "src/lib/**/tests"

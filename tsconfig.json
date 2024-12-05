@@ -11,13 +11,15 @@
     "ignoreDeprecations": "5.0",
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "es2019"
     ],
     "moduleResolution": "node",
   },
   "include": [
-    "src/lib"
+    "src/lib",
+    "src/demo"
   ],
   "exclude": [
     "src/lib/**/tests"

@@ -30,9 +30,10 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'build'),
-    library: "smtp2go-nodejs",
-    libraryTarget: 'umd',
-    clean: true
+    clean: true,
+    library: {
+      type: 'modern-module'
+    },
   },
   optimization: {
     minimize: true,
@@ -60,5 +61,8 @@ module.exports = {
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']
+  },
+  experiments: {
+    outputModule: true
   }
 };

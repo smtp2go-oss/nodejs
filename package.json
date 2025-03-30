@@ -1,6 +1,6 @@
 {
   "name": "smtp2go-nodejs",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "./build/index.js",
   "types": "./build/src/lib/index.d.ts",
@@ -87,9 +87,10 @@
     ]
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.26.10",
+    "@babel/runtime": "^7.27.0",
     "axios": "^1.8.4",
-    "mime-types": "^3.0.1",
-    "@babel/plugin-transform-runtime": "^7.17.0"
+    "mime-types": "^3.0.1"
   },
   "np": {
     "yarn": false,

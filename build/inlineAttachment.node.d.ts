@@ -1,4 +1,4 @@
-import MailAttachment from "./mailAttachment";
+import MailAttachment from "./mailAttachment.node";
 export default class InlineAttachment extends MailAttachment {
     constructor(cid: string, filepath: string);
 }

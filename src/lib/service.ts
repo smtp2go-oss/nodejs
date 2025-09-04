@@ -24,7 +24,7 @@ class SMTP2GOService implements BuildsRequest {
   }
 
   async buildRequestBody(): Promise<Record<string, string | boolean>> {
-    return await Promise.resolve(Object.fromEntries(this.requestBody));
+    return await Promise.resolve(Object.fromEntries(this.requestBody ?? new Map<string, any>()));
   }
 }
 export default SMTP2GOService;

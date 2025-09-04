@@ -9,7 +9,7 @@ export default class SMTP2GOApiClient {
     getHeaders(): {
         "Content-Type": string;
         'X-Smtp2go-Api': string;
-        'X-Smtp2go-Api-Version': string;
+        'X-Smtp2go-Api-Version': any;
     };
     consume(service: BuildsRequest): Promise<any>;
 }

@@ -1,4 +1,4 @@
-import MailAttachment from '../mailAttachment';
+import MailAttachment from '../mailAttachment.node';
 
 it('Should get the name and mimetype, and base64 encode a given filepath', async () => {
     const m = new MailAttachment(require('path').resolve(__dirname, './files/cat.jpg'));

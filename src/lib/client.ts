@@ -1,6 +1,6 @@
 import BuildsRequest from "./buildsrequest";
 import axios from "axios";
-import packageInfo from '../../package.json';
+const packageInfo = require('../../package.json');
 export default class SMTP2GOApiClient {
   apiKey: string;
   apiUrl = "https://api.smtp2go.com/v3/";
@@ -37,7 +37,7 @@ export default class SMTP2GOApiClient {
         data: body,
       });
       return data;
-    } catch (error) {
+    } catch (error: any) {
       return error.response;
     }
   }

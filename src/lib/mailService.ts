@@ -1,4 +1,4 @@
-import MailAttachment from "./mailAttachment";
+import MailAttachment from "./mailAttachment.node";
 import SMTP2GOService from "./service";
 import Address from "./types/address";
 import { AddressCollection } from "./types/addressCollection";

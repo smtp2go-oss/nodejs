@@ -1,8 +1,12 @@
 import SMTP2GOApiClient from "./client";
 import SMTP2GOService from "./service";
 import MailService from "./mailService";
-import MailAttachment from "./mailAttachment";
-import InlineAttachment from "./inlineAttachment";
+import MailAttachmentNode from "./mailAttachment.node";
+import InlineAttachmentNode from "./inlineAttachment.node";
+import MailAttachmentWeb from "./mailAttachment.web";
+import InlineAttachmentWeb from "./inlineAttachment.web";
+declare const MailAttachment: typeof MailAttachmentNode | typeof MailAttachmentWeb;
+declare const InlineAttachment: typeof InlineAttachmentNode | typeof InlineAttachmentWeb;
 export { SMTP2GOApiClient as ApiClient };
 export { SMTP2GOService as Service };
 export { MailService, MailAttachment, InlineAttachment };

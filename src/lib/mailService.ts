@@ -1,4 +1,4 @@
-import MailAttachment from "./mailAttachment.node";
+import mailAttachmentFactory from "./mailAttachmentFactory";
 import SMTP2GOService from "./service";
 import Address from "./types/address";
 import { AddressCollection } from "./types/addressCollection";
@@ -113,18 +113,18 @@ export default class mailService extends SMTP2GOService {
     this.subjectLine = subject;
     return this;
   }
-  attach(attachment: Attachment | AttachmentCollection | string): this {
-    if (typeof attachment === "string") {
-      this.attachments.push(new MailAttachment(attachment));
+  async attach(attachment: Attachment | AttachmentCollection | string | File): Promise<this> {
+    if (typeof attachment === "string" || attachment instanceof File) {
+      this.attachments.push(await mailAttachmentFactory.create(attachment));
     } else if (Array.isArray(attachment)) {
-      this.attachments.push(...attachment);
-    } else {
+      attachment.map((att) => this.attach(att));
+    } else if ("filename" in attachment && "readFileBlob" in attachment) {
       this.attachments.push(attachment);
     }
     return this;
   }
-  inline(cid: string, filepath: string): this {
-    const inlineAttachment = new MailAttachment(filepath);
+  async inline(cid: string, filepath: string): Promise<this> {
+    const inlineAttachment = await mailAttachmentFactory.createInline(cid, filepath);
     inlineAttachment.filename = cid;
     this.inlines.push(inlineAttachment);
     return this;
@@ -177,7 +177,7 @@ export default class mailService extends SMTP2GOService {
     if (this.attachments.length || this.inlines.length) {
       const promises: any[] = [];
       ["attachments", "inlines"].forEach((attachmentType) => {
-        this[attachmentType as keyof IAttachmentTypes].forEach((attachment: MailAttachment) => {
+        this[attachmentType as keyof IAttachmentTypes].forEach((attachment: Attachment) => {
           promises.push(attachment.readFileBlob());
         });
       });
@@ -186,7 +186,7 @@ export default class mailService extends SMTP2GOService {
           if (this[attachmentType as keyof ICollections].length) {
             this.requestBody.set(
               attachmentType,
-              this[attachmentType as keyof IAttachmentTypes].map((attachment: MailAttachment) =>
+              this[attachmentType as keyof IAttachmentTypes].map((attachment: Attachment) =>
                 attachment.forSend()
               )
             );

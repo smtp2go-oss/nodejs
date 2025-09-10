@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   presets: [["@babel/env", { targets: { node: "current" } }], "@babel/preset-typescript"],
   plugins: [
     ["@babel/plugin-transform-class-properties"],

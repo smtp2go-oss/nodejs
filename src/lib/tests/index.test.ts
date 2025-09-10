@@ -1,6 +1,8 @@
 import { ApiClient, Service } from '../index';
-require('dotenv').config();
+//require('dotenv').config();
+import 'dotenv/config';
 const APIKEY: string = process.env.APIKEY || "";
+
 
 it('The service forms arguments to the api correctly', async () => {
   const s = new Service('users/email_bounces', new Map([['test', 'param']]));
@@ -10,7 +12,7 @@ it('The service forms arguments to the api correctly', async () => {
 
 it('Makes a valid request to the API', async () => {
   const c = new ApiClient(APIKEY);  
-  const res = await c.consume(new Service('stats/email_bounces'));
+  const res = await c.consume(new Service('stats/email_bounces'));  
   expect(res.data).toHaveProperty('emails');
 });
 

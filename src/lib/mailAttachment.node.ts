@@ -1,7 +1,7 @@
 import Attachment from "./types/attachment";
-const fs = require("fs").promises;
-const mime = require("mime-types");
-const path = require("path");
+import {readFile} from "fs/promises";
+import {lookup} from "mime-types";
+import {basename} from "path";
 export default class MailAttachment implements Attachment {
   filepath: string;
   filename: string;
@@ -9,8 +9,9 @@ export default class MailAttachment implements Attachment {
   mimetype: string;
   constructor(filepath: string) {
     this.filepath = filepath;
-    this.mimetype = mime.lookup(this.filepath);
-    this.filename = path.basename(this.filepath);
+    const mt = lookup(this.filepath);
+    this.mimetype = typeof mt === "string" ? mt : "application/octet-stream";
+    this.filename = basename(this.filepath);
     this.fileblob = "";
   }
   setFileBlob(blob: string): this {
@@ -25,8 +26,7 @@ export default class MailAttachment implements Attachment {
     if (this.fileblob != "") {
       return this;
     }
-    this.fileblob = await fs
-      .readFile(this.filepath, { encoding: "base64" })
+    this.fileblob = await readFile(this.filepath, { encoding: "base64" })
       .catch((err: any) => {
         throw err;
       });

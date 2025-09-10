@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Web Worker Package Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-start py-8">
+  <h1 class="text-2xl font-bold mb-6 text-gray-800">Web Worker Test</h1>
+  <form id="mailForm" class="bg-white shadow-md rounded-lg p-8 w-full max-w-md space-y-5">
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        To Email:
+        <input type="email" name="toEmail" value="kris@2050.nz" required
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        To Name:
+        <input type="text" name="toName" value="Kris"
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        From Email:
+        <input type="email" name="fromEmail" value="kris+from@2050.nz" required
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        From Name:
+        <input type="text" name="fromName" value="Kris Sender"
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        Subject:
+        <input type="text" name="subject" value="Test Message" required
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        HTML Body:
+        <textarea name="html" required rows="4"
+          class="mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+
+        </textarea>
+      </label>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-medium mb-1">
+        Attachment:
+        <input type="file" name="attachment" class="mt-1 block w-full text-gray-700" />
+      </label>
+    </div>
+    <button type="submit"
+      class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition">Send</button>
+  </form>
+  <pre id="output" class="mt-8 bg-gray-100 rounded p-4 w-full max-w-md text-sm text-gray-800"></pre>
+  <script type="module">
+    const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+    const apikey = import.meta.env.VITE_API_KEY;
+    
+    worker.onmessage = (e) => {
+      const output = document.getElementById('output');
+      if (e.data.success) {
+        output.textContent = 'Result:\n' + JSON.stringify(e.data.result, null, 2);
+      } else {
+        output.textContent = 'Error:\n' + e.data.error;
+      }
+    };
+
+    worker.onerror = (e) => {
+      const output = document.getElementById('output');
+      output.textContent = 'Worker Error:\n' + e.message;
+    };
+
+    document.getElementById('mailForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const attachmentInput = form.attachment;
+
+      const file = attachmentInput.files[0];
+
+      worker.postMessage({
+        apikey: apikey, //for demo purposes only, please dont do this in production!
+        to: {
+          email: form.toEmail.value,
+          name: form.toName.value
+        },
+        from: {
+          email: form.fromEmail.value,
+          name: form.fromName.value
+        },
+        subject: form.subject.value,
+        html: form.html.value,
+        attachment: file || null
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 import BuildsRequest from "./buildsrequest";
 import axios from "axios";
-const packageInfo = require('../../package.json');
+import packageInfo from '../../package.json';
 export default class SMTP2GOApiClient {
   apiKey: string;
   apiUrl = "https://api.smtp2go.com/v3/";
@@ -20,7 +20,7 @@ export default class SMTP2GOApiClient {
     const presetHeaders = {
       "Content-Type": "application/json",
       'X-Smtp2go-Api': 'smtp2go-nodejs',
-      'X-Smtp2go-Api-Version': packageInfo.version,
+      'X-Smtp2go-Api-Version': packageInfo?.version || 'smtp2go-nodejs-development-version',
     };
     //combine preset headers with custom headers but don't allow custom headers to overwrite preset headers
     return { ...this.headers, ...presetHeaders };

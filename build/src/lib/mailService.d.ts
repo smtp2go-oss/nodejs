@@ -31,8 +31,8 @@ export default class mailService extends SMTP2GOService {
     _addAddressOfType(emailAddress: Address | AddressCollection, t: AddressType): this;
     headers(header: Header | HeaderCollection): this;
     subject(subject: string): this;
-    attach(attachment: Attachment | AttachmentCollection | string): this;
-    inline(cid: string, filepath: string): this;
+    attach(attachment: Attachment | AttachmentCollection | string | File): Promise<this>;
+    inline(cid: string, filepath: string): Promise<this>;
     getFormattedAddresses(type: AddressType): Array<string>;
     formatAddress(address: Address): string;
     buildRequestBody(): Promise<Record<string, string | boolean>>;

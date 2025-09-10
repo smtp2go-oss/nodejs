@@ -62,9 +62,10 @@ it('Builds an email request', async () => {
         .cc({ email: 'bob@smith.com' })
         .from({ email: 'sender@test.nz' })
         .subject('Testing')
-        .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>')
-        .attach(require('path').resolve(__dirname, './files/test.txt'))
-        .inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'))
+        .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>');
+
+    await mail.attach(require('path').resolve(__dirname, './files/test.txt'))
+    await mail.inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'))
 
     const requestBody = await mail.buildRequestBody();
     expect(requestBody).toHaveProperty('html_body');

@@ -1,8 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const getPackageJson = require('./scripts/getPackageJson');
-const nodeExternals = require('webpack-node-externals');
+import path from 'path';
+import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
+import getPackageJson from './scripts/getPackageJson.js';
+import nodeExternals from 'webpack-node-externals';
+
 const {
   version,
   name,
@@ -21,7 +22,7 @@ const banner = `
   LICENSE file in the root directory of this source tree.
 `;
 
-module.exports = {
+export default {
   mode: "production",
   devtool: 'source-map',
   target: 'node',
@@ -29,7 +30,7 @@ module.exports = {
   entry: './src/lib/index.ts',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(process.cwd(), 'build'),
     library: "smtp2go-nodejs",
     libraryTarget: 'umd',
     clean: true
@@ -38,7 +39,6 @@ module.exports = {
     minimize: true,
     minimizer: [
       new TerserPlugin({ extractComments: false }),
-
     ],
   },
   module: {
@@ -50,13 +50,11 @@ module.exports = {
           loader: 'babel-loader'
         }
       },
-
     ]
   },
   plugins: [
     // new PrettierPlugin(),
-
-    new webpack.BannerPlugin(banner)
+    new webpack.BannerPlugin({ banner })
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']

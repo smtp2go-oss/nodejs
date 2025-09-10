@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * A module to get package informations from package.json
@@ -11,8 +12,11 @@ const path = require('path');
 /**
  * Returns package info
  */
+// Recreate __dirname for ESM
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const getPackageJson = function(...args) {
-  const packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
+  const packageJSON = JSON.parse(readFileSync(join(__dirname, '../package.json')));
   if (!args.length) {
     return packageJSON;
   }
@@ -22,4 +26,4 @@ const getPackageJson = function(...args) {
   }, {});
 };
 
-module.exports = getPackageJson;
+export default getPackageJson;

@@ -2,23 +2,24 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "outDir": "build",
-    "module": "esnext",
+    "module": "preserve",
     "target": "es2017",
     "allowJs": true,
     "sourceMap": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    "noEmit": true,
     "ignoreDeprecations": "5.0",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "lib": [
-      "es2017","DOM", "WebWorker"
+      "es2017", "WebWorker"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
   },
   "include": [
-    "src/lib",
+    "src/lib/**/*",
   ],
   "exclude": [
     "src/lib/**/tests"

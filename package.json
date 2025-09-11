@@ -2,13 +2,25 @@
   "name": "smtp2go-nodejs",
   "version": "1.0.0-alpha.1",
   "type": "module",
+  "types": "./build/src/lib/index.d.ts",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
   "main": "./build/index.js",
-  "types": "./build/src/lib/index.d.ts",
+  "browser": "./build/index.browser.js",
   "exports": {
     ".": {
-      "types": "./build/src/lib/index.d.ts",
-      "import": "./build/index.js"
+      "types": {
+        "browser": "./build/src/lib/index.browser.d.ts",
+        "default": "./build/src/lib/index.d.ts"
+      },
+      "browser": {
+        "default": "./build/index.browser.js"
+      },
+      "require": {
+        "default": "./build/index.js"
+      },
+      "import": {
+        "default": "./build/index.js"
+      }
     }
   },
   "files": [
@@ -16,7 +28,7 @@
   ],
   "scripts": {
     "start": "webpack serve --config webpack.config.demo.js",
-    "build": "webpack && tsc",
+    "build": "webpack && npx vite build -c vite.config.build.ts && tsc",
     "watch": "webpack && tsc --watch",
     "bundleup": "webpack-cli",
     "build:demo": "webpack --config webpack.config.demo.js",

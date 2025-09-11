@@ -1,10 +1,10 @@
 import SMTP2GOApiClient from "./client";
 import SMTP2GOService from "./service";
-import MailService from "./mailService";
+import NodeMailService from "./nodeMailService";
 
 export { SMTP2GOApiClient as ApiClient };
 export { SMTP2GOService as Service };
-export { MailService };
+export { NodeMailService };
 
 export default function SMTP2GOApi(apiKey: string) {
   return {
@@ -12,7 +12,7 @@ export default function SMTP2GOApi(apiKey: string) {
       return new SMTP2GOService(endpoint);
     },
     mail: function () {
-      return new MailService();
+      return new NodeMailService();
     },
     client: function () {
       return new SMTP2GOApiClient(apiKey);

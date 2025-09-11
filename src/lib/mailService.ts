@@ -1,4 +1,3 @@
-import mailAttachmentFactory from "./mailAttachmentFactory";
 import SMTP2GOService from "./service";
 import Address from "./types/address";
 import { AddressCollection } from "./types/addressCollection";
@@ -113,20 +112,12 @@ export default class mailService extends SMTP2GOService {
     this.subjectLine = subject;
     return this;
   }
-  async attach(attachment: Attachment | AttachmentCollection | string | File): Promise<this> {
-    if (typeof attachment === "string" || attachment instanceof File) {
-      this.attachments.push(await mailAttachmentFactory.create(attachment));
-    } else if (Array.isArray(attachment)) {
-      attachment.map((att) => this.attach(att));
-    } else if ("filename" in attachment && "readFileBlob" in attachment) {
-      this.attachments.push(attachment);
-    }
+  attach(attachment: Attachment | AttachmentCollection | string | File): this {
+
     return this;
   }
-  async inline(cid: string, filepath: string): Promise<this> {
-    const inlineAttachment = await mailAttachmentFactory.createInline(cid, filepath);
-    inlineAttachment.filename = cid;
-    this.inlines.push(inlineAttachment);
+  inline(cid: string, filepath: string|File): this {
+
     return this;
   }
   getFormattedAddresses(type: AddressType): Array<string> {

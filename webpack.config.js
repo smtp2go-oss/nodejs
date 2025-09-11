@@ -22,19 +22,9 @@ const banner = `
   LICENSE file in the root directory of this source tree.
 `;
 
-export default {
+const baseConfig = {
   mode: "production",
   devtool: 'source-map',
-  target: 'node',
-  externals: [nodeExternals()],
-  entry: './src/lib/index.ts',
-  output: {
-    filename: 'index.js',
-    path: path.resolve(process.cwd(), 'build'),
-    library: "smtp2go-nodejs",
-    libraryTarget: 'umd',
-    clean: true
-  },
   optimization: {
     minimize: true,
     minimizer: [
@@ -53,10 +43,29 @@ export default {
     ]
   },
   plugins: [
-    // new PrettierPlugin(),
     new webpack.BannerPlugin({ banner })
   ],
   resolve: {
     extensions: ['.ts', '.js', '.json']
   }
 };
+
+// Node build (includes Node-only code)
+const nodeConfig = {
+  ...baseConfig,
+  target: 'node',
+  externals: [nodeExternals()],
+  entry: './src/lib/index.ts',
+  output: {
+    filename: 'index.js',
+    path: path.resolve(process.cwd(), 'build'),
+    library: {
+      type: 'commonjs2',
+    },
+    clean: true
+  }
+};
+
+
+
+export default [nodeConfig];

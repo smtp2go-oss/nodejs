@@ -1,4 +1,4 @@
-import { MailService } from '../index';
+import { NodeMailService as MailService } from '../index';
 import SMTP2GOApi from '../index';
 
 it('Adds an address', () => {

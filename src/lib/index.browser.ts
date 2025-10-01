@@ -1,10 +1,16 @@
 import SMTP2GOApiClient from "./client";
 import SMTP2GOService from "./service";
 import WebMailService from "./webMailService";
+import MailAttachment from "./mailAttachment.web";
+import InlineAttachment from "./inlineAttachment.web";
+
 
 export { SMTP2GOApiClient as ApiClient };
 export { SMTP2GOService as Service };
 export { WebMailService };
+export { MailAttachment };
+export { InlineAttachment };
+
 
 export default function SMTP2GOApi(apiKey: string) {
   return {
@@ -16,17 +22,17 @@ export default function SMTP2GOApi(apiKey: string) {
     },
     client: function () {
       return new SMTP2GOApiClient(apiKey);
-    },
+    }
   };
 }
 
 
-export * from './types/address';
+export { default as Address } from './types/address';
 export * from './types/addressCollection';
 export * from './types/addressType';
-export * from './types/attachment';
+export { default as Attachment } from './types/attachment';
 export * from './types/attachmentCollection';
-export * from './types/header';
+export { default as Header } from './types/header';
 export * from './types/headerCollection';
 
 

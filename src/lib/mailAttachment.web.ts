@@ -6,11 +6,11 @@ export default class MailAttachment implements Attachment {
   fileblob: string;
   mimetype: string;
 
-  constructor(file: File) {
+  constructor(file: File, blob: string = "") {
     this.file = file;
     this.filename = file.name;
     this.mimetype = file.type || "application/octet-stream";
-    this.fileblob = "";
+    this.fileblob = blob;
   }
 
   setFileBlob(blob: string): this {

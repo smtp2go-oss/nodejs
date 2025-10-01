@@ -1,7 +1,7 @@
 import MailAttachment from "./mailAttachment.node";
 import InlineAttachment from "./inlineAttachment.node";
 import mailService from "./mailService";
-import Attachment from "./types/attachment";
+import {Attachment} from "./types/attachment";
 import { AttachmentCollection } from "./types/attachmentCollection";
 
 export default class webMailService extends mailService {

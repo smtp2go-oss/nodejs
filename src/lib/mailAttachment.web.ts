@@ -1,4 +1,4 @@
-import Attachment from "./types/attachment";
+import {Attachment} from "./types/attachment";
 
 export default class MailAttachment implements Attachment {
   file: File;

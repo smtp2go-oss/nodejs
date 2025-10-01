@@ -1,4 +1,4 @@
-import Attachment from "./types/attachment";
+import {Attachment} from "./types/attachment";
 import {readFile} from "fs/promises";
 import {lookup} from "mime-types";
 import {basename} from "path";

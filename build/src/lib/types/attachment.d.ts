@@ -1,4 +1,4 @@
-export default interface Attachment {
+export interface Attachment {
     filename: string;
     fileblob: string;
     mimetype: string;

@@ -1,10 +1,10 @@
 import SMTP2GOService from "./service";
-import Address from "./types/address";
+import {Address} from "./types/address";
 import { AddressCollection } from "./types/addressCollection";
 import { AddressType } from "./types/addressType";
-import Attachment from "./types/attachment";
+import {Attachment} from "./types/attachment";
 import { AttachmentCollection } from "./types/attachmentCollection";
-import Header from "./types/header";
+import {Header} from "./types/header";
 import { HeaderCollection } from "./types/headerCollection";
 
 interface IAddressTypes {

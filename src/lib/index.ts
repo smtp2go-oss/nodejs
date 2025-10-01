@@ -25,12 +25,12 @@ export default function SMTP2GOApi(apiKey: string) {
 }
 
 
-export { default as Address } from './types/address';
+export type { Address } from './types/address';
 export * from './types/addressCollection';
 export * from './types/addressType';
-export { default as Attachment } from './types/attachment';
+export type { Attachment } from './types/attachment';
 export * from './types/attachmentCollection';
-export { default as Header } from './types/header';
+export type { Header } from './types/header';
 export * from './types/headerCollection';
 
 

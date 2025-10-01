@@ -2404,7 +2404,7 @@ const {
   getAdapter,
   mergeConfig
 } = axios;
-const version = "1.0.0-alpha.1";
+const version = "1.0.0-alpha.2";
 const packageInfo = {
   version
 };
@@ -2461,11 +2461,11 @@ class SMTP2GOService {
   }
 }
 class MailAttachment {
-  constructor(file) {
+  constructor(file, blob = "") {
     this.file = file;
     this.filename = file.name;
     this.mimetype = file.type || "application/octet-stream";
-    this.fileblob = "";
+    this.fileblob = blob;
   }
   setFileBlob(blob) {
     this.fileblob = blob;
@@ -2683,6 +2683,8 @@ function SMTP2GOApi(apiKey) {
 }
 export {
   SMTP2GOApiClient as ApiClient,
+  InlineAttachment,
+  MailAttachment,
   SMTP2GOService as Service,
   webMailService as WebMailService,
   SMTP2GOApi as default

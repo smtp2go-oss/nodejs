@@ -1,4 +1,4 @@
-export default interface Header {
-    name:string,
-    value:string,
+export interface Header {
+    name: string,
+    value: string,
 }

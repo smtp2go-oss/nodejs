@@ -4,7 +4,7 @@ export default class MailAttachment implements Attachment {
     filename: string;
     fileblob: string;
     mimetype: string;
-    constructor(file: File, blob?: string);
+    constructor(file: File);
     setFileBlob(blob: string): this;
     /**
      * Get the base64 encoded file content

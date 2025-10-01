@@ -2461,11 +2461,11 @@ class SMTP2GOService {
   }
 }
 class MailAttachment {
-  constructor(file, blob = "") {
+  constructor(file) {
     this.file = file;
     this.filename = file.name;
     this.mimetype = file.type || "application/octet-stream";
-    this.fileblob = blob;
+    this.fileblob = "";
   }
   setFileBlob(blob) {
     this.fileblob = blob;
@@ -2479,15 +2479,10 @@ class MailAttachment {
     if (this.fileblob !== "") {
       return this;
     }
-    this.fileblob = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result.split(",")[1];
-        resolve(result);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(this.file);
-    });
+    if (this.file) {
+      const buffer = await this.file.arrayBuffer();
+      this.fileblob = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    }
     return this;
   }
   forSend() {

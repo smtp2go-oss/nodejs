@@ -1,8 +1,8 @@
 import MailAttachment from "./mailAttachment.web";
 import InlineAttachment from "./inlineAttachment.web";
 import mailService from "./mailService";
-import {Attachment} from "./types/attachment";
-import {AttachmentCollection} from "./types/attachmentCollection";
+import { Attachment } from "./types/attachment";
+import { AttachmentCollection } from "./types/attachmentCollection";
 
 export default class webMailService extends mailService {
   constructor() {
@@ -14,7 +14,8 @@ export default class webMailService extends mailService {
       attachment.map((att) => this.attach(att));
     } else if ("filename" in attachment && "readFileBlob" in attachment) {
       this.attachments.push(attachment);
-    } else {
+    }
+    else {
       this.attachments.push(new MailAttachment(attachment));
     }
     return this;

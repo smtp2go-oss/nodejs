@@ -1,4 +1,4 @@
-import {Attachment} from "./types/attachment";
+import { Attachment } from "./types/attachment";
 
 export default class MailAttachment implements Attachment {
   file: File;
@@ -6,11 +6,11 @@ export default class MailAttachment implements Attachment {
   fileblob: string;
   mimetype: string;
 
-  constructor(file: File, blob: string = "") {
+  constructor(file: File) {
     this.file = file;
     this.filename = file.name;
     this.mimetype = file.type || "application/octet-stream";
-    this.fileblob = blob;
+    this.fileblob = "";
   }
 
   setFileBlob(blob: string): this {
@@ -26,16 +26,12 @@ export default class MailAttachment implements Attachment {
     if (this.fileblob !== "") {
       return this;
     }
-    this.fileblob = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Remove the data URL prefix
-        const result = (reader.result as string).split(",")[1];
-        resolve(result);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(this.file);
-    });
+    if (this.file) {
+      const buffer = await this.file.arrayBuffer();
+      // Convert to base64
+      this.fileblob = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    }
+
     return this;
   }
 

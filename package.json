@@ -15,12 +15,7 @@
       "browser": {
         "default": "./build/index.browser.js"
       },
-      "require": {
-        "default": "./build/index.js"
-      },
-      "import": {
-        "default": "./build/index.js"
-      }
+      "import": "./build/index.node.js"
     }
   },
   "files": [
@@ -28,7 +23,7 @@
   ],
   "scripts": {
     "start": "webpack serve --config webpack.config.demo.js",
-    "build": "webpack && npx vite build -c vite.config.build.ts && tsc",
+    "build": "npx vite build -c vite.nodeconfig.build.ts && npx vite build -c vite.config.build.ts && tsc",
     "watch": "webpack && tsc --watch",
     "bundleup": "webpack-cli",
     "build:demo": "webpack --config webpack.config.demo.js",
@@ -53,20 +48,10 @@
     "api"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.3",
-    "@babel/plugin-transform-class-properties": "^7.27.1",
-    "@babel/plugin-transform-typescript": "^7.28.0",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
     "@types/jest": "^30.0.0",
     "@types/mime-types": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^10.0.0",
-    "babel-preset-minify": "^0.5.2",
     "css-loader": "^7.1.2",
     "dotenv": "^17.2.2",
     "eslint": "^9.34.0",
@@ -84,8 +69,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.28.3",
-    "@babel/runtime": "^7.28.3",
     "axios": "^1.11.0",
     "mime-types": "^3.0.1"
   },

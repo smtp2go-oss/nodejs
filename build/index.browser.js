@@ -2404,7 +2404,7 @@ const {
   getAdapter,
   mergeConfig
 } = axios;
-const version = "1.0.0-alpha.2";
+const version = "1.0.0-alpha.3";
 const packageInfo = {
   version
 };

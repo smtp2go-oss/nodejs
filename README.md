@@ -9,8 +9,9 @@ This library provides a simple way to send email via the SMTP2GO API and also ac
 ### Example Code - Sending an Email
 
 ```javascript
-import SMTP2GOApi from 'smtp2go-nodejs';
+import smtp2go from 'smtp2go-nodejs';
 
+const SMTP2GOApi = smtp2go.default || smtp2go;
 const api = SMTP2GOApi(process.env.APIKEY);
 
 const mailService = api.mail()
@@ -30,10 +31,11 @@ api.client().consume(mailService);
 
 ### Example Code - Sending an Email with a template
 ```javascript
-import SMTP2GOApi from 'smtp2go-nodejs';
-require('dotenv').config();
+import smtp2go from 'smtp2go-nodejs';
 
+const SMTP2GOApi = smtp2go.default || smtp2go;
 const api = SMTP2GOApi(process.env.APIKEY);
+
 
 const mailService = api.mail()
     .to({ email: process.env.TO_EMAIL, name: "Recipient" })

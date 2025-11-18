@@ -52,5 +52,5 @@ const mailService = api.mail()
     ]));
 
 
-const res = api.client().consume(mailService);
+api.client().consume(mailService);
 ```

@@ -48,9 +48,9 @@ it('Accepts a collection of "bcc" addresses', () => {
 
 it('Accepts a collection of custom headers', () => {
     const mailService = new MailService();
-    mailService.headers({ name: 'X-SENT-BY', value: 'SMPT2GONODE' });
+    mailService.headers({ header: 'X-SENT-BY', value: 'SMPT2GONODE' });
     expect(mailService.customHeaders.length).toBe(1);
-    mailService.headers({ name: 'X-ANOTHER-HEADER', value: '!!' });
+    mailService.headers({ header: 'X-ANOTHER-HEADER', value: '!!' });
     expect(mailService.customHeaders.length).toBe(2);
 });
 

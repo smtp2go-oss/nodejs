@@ -1,4 +1,4 @@
 export interface Header {
-    name: string,
+    header: string,
     value: string,
 }

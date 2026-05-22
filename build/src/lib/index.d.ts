@@ -9,6 +9,7 @@ export { SMTP2GOService as Service };
 export { NodeMailService };
 export { MailAttachment };
 export { InlineAttachment };
+export { SMTP2GOError } from "./client";
 export default function SMTP2GOApi(apiKey: string): {
     service: (endpoint: string, requestBody?: Map<string, string | boolean> | undefined, method?: Method) => SMTP2GOService;
     mail: () => NodeMailService;

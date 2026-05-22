@@ -1,4 +1,5 @@
 import SMTP2GOService from "./service";
+import { RequestBody } from "./types/requestBody";
 import { Address } from "./types/address";
 import { AddressCollection } from "./types/addressCollection";
 import { AddressType } from "./types/addressType";
@@ -6,20 +7,22 @@ import { Attachment } from "./types/attachment";
 import { AttachmentCollection } from "./types/attachmentCollection";
 import { Header } from "./types/header";
 import { HeaderCollection } from "./types/headerCollection";
-export default class mailService extends SMTP2GOService {
-    htmlBody: string;
-    textBody: string;
-    fromAddress: Address;
+export default abstract class mailService extends SMTP2GOService {
+    htmlBody?: string;
+    textBody?: string;
+    fromAddress?: Address;
     toAddress: AddressCollection;
     ccAddress: AddressCollection;
     bccAddress: AddressCollection;
-    subjectLine: string;
-    templateId: string;
-    templateData: Map<string, string>;
+    subjectLine?: string;
+    templateId?: string;
+    templateData?: Map<string, string>;
     customHeaders: HeaderCollection;
     attachments: AttachmentCollection;
     inlines: AttachmentCollection;
     constructor();
+    abstract attach(attachment: Attachment | AttachmentCollection | string | File): this;
+    abstract inline(cid: string, filepath: string | File): this;
     addAddress(address: Address, type?: AddressType): this;
     html(content: string): this;
     text(content: string): this;
@@ -31,9 +34,7 @@ export default class mailService extends SMTP2GOService {
     _addAddressOfType(emailAddress: Address | AddressCollection, t: AddressType): this;
     headers(header: Header | HeaderCollection): this;
     subject(subject: string): this;
-    attach(attachment: Attachment | AttachmentCollection | string | File): this;
-    inline(cid: string, filepath: string | File): this;
     getFormattedAddresses(type: AddressType): Array<string>;
     formatAddress(address: Address): string;
-    buildRequestBody(): Promise<Record<string, string | boolean>>;
+    buildRequestBody(): Promise<RequestBody>;
 }

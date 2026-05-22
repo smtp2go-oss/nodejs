@@ -1,4 +1,9 @@
 import BuildsRequest from "./buildsrequest";
+export declare class SMTP2GOError extends Error {
+    status?: number;
+    response?: unknown;
+    constructor(message: string, status?: number, response?: unknown);
+}
 export default class SMTP2GOApiClient {
     apiKey: string;
     apiUrl: string;

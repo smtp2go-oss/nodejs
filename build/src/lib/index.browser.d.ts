@@ -8,6 +8,7 @@ export { SMTP2GOService as Service };
 export { WebMailService };
 export { MailAttachment };
 export { InlineAttachment };
+export { SMTP2GOError } from "./client";
 export default function SMTP2GOApi(apiKey: string): {
     service: (endpoint: string) => SMTP2GOService;
     mail: () => WebMailService;

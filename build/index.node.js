@@ -1762,6 +1762,9 @@ class sa {
   getMethod() {
     return this.method;
   }
+  setMethod(e) {
+    this.method = e;
+  }
   getEndpoint() {
     return this.endpoint;
   }
@@ -4547,8 +4550,8 @@ class Gi extends Xi {
 }
 function wn(a) {
   return {
-    service: function(e) {
-      return new sa(e);
+    service: function(e, i = void 0, n = "POST") {
+      return new sa(e, i, n);
     },
     mail: function() {
       return new Gi();

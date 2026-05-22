@@ -4,7 +4,7 @@ import mailService from "./mailService";
 import {Attachment} from "./types/attachment";
 import { AttachmentCollection } from "./types/attachmentCollection";
 
-export default class webMailService extends mailService {
+export default class nodeMailService extends mailService {
     constructor() {
         super();
     }

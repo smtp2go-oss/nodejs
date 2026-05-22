@@ -11,7 +11,7 @@ export default class webMailService extends mailService {
 
   attach(attachment: Attachment | AttachmentCollection | File): this {
     if (Array.isArray(attachment)) {
-      attachment.map((att) => this.attach(att));
+      attachment.forEach((att) => this.attach(att));
     } else if ("filename" in attachment && "readFileBlob" in attachment) {
       this.attachments.push(attachment);
     }

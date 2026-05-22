@@ -2453,6 +2453,9 @@ class SMTP2GOService {
   getMethod() {
     return this.method;
   }
+  setMethod(method) {
+    this.method = method;
+  }
   getEndpoint() {
     return this.endpoint;
   }

@@ -3,13 +3,14 @@ import SMTP2GOService from "./service";
 import NodeMailService from "./nodeMailService";
 import MailAttachment from "./mailAttachment.node";
 import InlineAttachment from "./inlineAttachment.node";
+import { Method } from "axios";
 export { SMTP2GOApiClient as ApiClient };
 export { SMTP2GOService as Service };
 export { NodeMailService };
 export { MailAttachment };
 export { InlineAttachment };
 export default function SMTP2GOApi(apiKey: string): {
-    service: (endpoint: string) => SMTP2GOService;
+    service: (endpoint: string, requestBody?: Map<string, string | boolean> | undefined, method?: Method) => SMTP2GOService;
     mail: () => NodeMailService;
     client: () => SMTP2GOApiClient;
 };

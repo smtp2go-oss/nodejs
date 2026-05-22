@@ -27,9 +27,12 @@ export default class MailAttachment implements Attachment {
       return this;
     }
     if (this.file) {
-      const buffer = await this.file.arrayBuffer();
-      // Convert to base64
-      this.fileblob = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+      const bytes = new Uint8Array(await this.file.arrayBuffer());
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      this.fileblob = btoa(binary);
     }
 
     return this;

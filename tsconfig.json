@@ -3,7 +3,7 @@
     "noImplicitAny": true,
     "outDir": "build",
     "module": "preserve",
-    "target": "es2017",
+    "target": "es2019",
     "allowJs": true,
     "sourceMap": true,
     "declaration": true,
@@ -12,8 +12,13 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "types": [
+      "node",
+      "jest"
+    ],
     "lib": [
-      "es2017", "WebWorker"
+      "es2019",
+      "WebWorker"
     ],
     "moduleResolution": "bundler",
   },
@@ -22,5 +27,5 @@
   ],
   "exclude": [
     "src/lib/**/tests"
-  ],
+  ]
 }

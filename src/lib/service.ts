@@ -1,13 +1,14 @@
 import BuildsRequest from "./buildsrequest";
 import { Method } from "axios";
+import { RequestBody, RequestBodyMap } from "./types/requestBody";
 class SMTP2GOService implements BuildsRequest {
   method: Method;
   endpoint: string;
-  requestBody?: Map<string, any>;
+  requestBody?: RequestBodyMap;
 
   constructor(
     endpoint: string,
-    requestBody?: Map<string, string | boolean>,
+    requestBody?: RequestBodyMap,
     method?: Method
   ) {
     this.endpoint = endpoint;
@@ -19,11 +20,15 @@ class SMTP2GOService implements BuildsRequest {
     return this.method;
   }
 
+  setMethod(method: Method) {
+    this.method = method;
+  }
+
   getEndpoint(): string {
     return this.endpoint;
   }
 
-  async buildRequestBody(): Promise<Record<string, string | boolean>> {
+  async buildRequestBody(): Promise<RequestBody> {
     return await Promise.resolve(Object.fromEntries(this.requestBody ?? new Map<string, any>()));
   }
 }

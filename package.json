@@ -1,11 +1,12 @@
 {
   "name": "smtp2go-nodejs",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "type": "module",
   "types": "./build/src/lib/index.d.ts",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
-  "main": "./build/index.js",
+  "main": "./build/index.node.js",
   "browser": "./build/index.browser.js",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": {
@@ -22,11 +23,7 @@
     "build"
   ],
   "scripts": {
-    "start": "webpack serve --config webpack.config.demo.js",
     "build": "npx vite build -c vite.nodeconfig.build.ts && npx vite build -c vite.config.build.ts && tsc",
-    "watch": "webpack && tsc --watch",
-    "bundleup": "webpack-cli",
-    "build:demo": "webpack --config webpack.config.demo.js",
     "test": "jest",
     "coverage": "npm run test -- --coverage",
     "prepare": "npm run build",
@@ -42,31 +39,30 @@
     "url": "https://github.com/smtp2go-oss/nodejs/issues"
   },
   "homepage": "https://github.com/smtp2go-oss/nodejs",
+  "engines": {
+    "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+  },
   "keywords": [
     "smtp",
+    "smtp2go",
     "mail",
-    "api"
+    "email",
+    "transactional",
+    "api",
+    "typescript"
   ],
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/mime-types": "^3.0.1",
+    "@types/node": "^25.9.1",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
-    "css-loader": "^7.1.2",
     "dotenv": "^17.2.2",
     "eslint": "^9.34.0",
-    "file-loader": "^6.2.0",
     "jest": "^30.1.3",
-    "terser-webpack-plugin": "^5.3.14",
     "ts-jest": "^29.4.1",
-    "ts-loader": "^9.5.4",
     "typescript": "^5.9.2",
-    "url-loader": "^4.1.1",
-    "vite": "^7.1.5",
-    "webpack": "^5.101.3",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-node-externals": "^3.0.0"
+    "vite": "^7.1.5"
   },
   "dependencies": {
     "axios": "^1.11.0",

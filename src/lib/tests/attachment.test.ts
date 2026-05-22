@@ -1,4 +1,5 @@
 import MailAttachmentNode from '../mailAttachment.node';
+import {  it, expect } from '@jest/globals';
 
 it('Should get the name and mimetype, and base64 encode a given filepath', async () => {
     const m = new MailAttachmentNode(require('path').resolve(__dirname, './files/cat.jpg'));

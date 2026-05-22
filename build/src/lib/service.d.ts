@@ -6,6 +6,7 @@ declare class SMTP2GOService implements BuildsRequest {
     requestBody?: Map<string, any>;
     constructor(endpoint: string, requestBody?: Map<string, string | boolean>, method?: Method);
     getMethod(): Method;
+    setMethod(method: Method): void;
     getEndpoint(): string;
     buildRequestBody(): Promise<Record<string, string | boolean>>;
 }

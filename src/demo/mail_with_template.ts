@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import SMTP2GOApi from 'smtp2go-nodejs';
-import { fileURLToPath } from 'url';
 
 const api = SMTP2GOApi(process.env.APIKEY!);
 

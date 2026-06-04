@@ -2118,7 +2118,7 @@ const {
   getAdapter: ts,
   mergeConfig: cs,
   create: rs
-} = E, Tn = "1.0.0-beta.1", _n = {
+} = E, Tn = "1.0.0-beta.2", _n = {
   version: Tn
 };
 class sa extends Error {

@@ -2963,7 +2963,7 @@ const {
   mergeConfig,
   create
 } = axios;
-const version = "1.0.0-beta.1";
+const version = "1.0.0-beta.2";
 const packageInfo = {
   version
 };

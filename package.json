@@ -16,7 +16,8 @@
       "browser": {
         "default": "./build/index.browser.js"
       },
-      "import": "./build/index.node.js"
+      "import": "./build/index.node.js",
+      "default": "./build/index.node.js"
     }
   },
   "files": [

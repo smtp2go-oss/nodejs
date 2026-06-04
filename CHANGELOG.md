@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.0] - Unreleased
+## [1.0.0]
 
 ### Breaking Changes
 
@@ -29,21 +29,17 @@
   import { NodeMailService } from 'smtp2go-nodejs';
   ```
 
-- **ESM only — CommonJS (`require`) no longer supported**: The package is now `"type": "module"`. Replace `require('smtp2go-nodejs')` with an ESM `import`.
-
-  ```js
-  // Before
-  const smtp2go = require('smtp2go-nodejs');
-
-  // After
-  import smtp2go from 'smtp2go-nodejs';
-  ```
-
 - **Node.js version requirement**: Node.js `>= 18.14.0` is now required. Versions 16 and below are no longer supported.
 
 - **`inline()` web signature changed**: In the browser build, the second argument to `inline(cid, file)` is now a `File` object instead of a filepath string.
 
 ### New Features
+
+- **CommonJS support**: The package now ships both an ESM and a CJS build. CommonJS projects can use `require()` without any configuration changes.
+
+  ```js
+  const { default: SMTP2GOApi } = require('smtp2go-nodejs');
+  ```
 
 - **Browser build**: A dedicated browser-compatible bundle (`index.browser.js`) is now included, with `webMailService` and web-native attachment handling via the `File` API.
 - **`SMTP2GOError` class**: Exported for use in `instanceof` checks and typed error handling. Includes `.status` (HTTP status code) and `.response` (API response body) properties.

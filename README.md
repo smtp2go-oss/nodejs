@@ -12,6 +12,22 @@ npm i smtp2go-nodejs
 
 ### Node.js
 
+The package supports both ESM and CommonJS.
+
+**ESM**
+
+```javascript
+import SMTP2GOApi from "smtp2go-nodejs";
+```
+
+**CommonJS**
+
+```javascript
+const { default: SMTP2GOApi } = require("smtp2go-nodejs");
+```
+
+---
+
 #### Send an email
 
 ```javascript

@@ -1,11 +1,11 @@
-import MailAttachment from "./mailAttachment";
 import SMTP2GOService from "./service";
-import Address from "./types/address";
+import { RequestBody, RequestBodyMap } from "./types/requestBody";
+import {Address} from "./types/address";
 import { AddressCollection } from "./types/addressCollection";
 import { AddressType } from "./types/addressType";
-import Attachment from "./types/attachment";
+import {Attachment} from "./types/attachment";
 import { AttachmentCollection } from "./types/attachmentCollection";
-import Header from "./types/header";
+import {Header} from "./types/header";
 import { HeaderCollection } from "./types/headerCollection";
 
 interface IAddressTypes {
@@ -25,30 +25,32 @@ interface IAttachmentTypes {
   attachments: AttachmentCollection;
   inlines: AttachmentCollection;
 }
-export default class mailService extends SMTP2GOService {
-  htmlBody: string;
-  textBody: string;
-  fromAddress: Address;
+export default abstract class mailService extends SMTP2GOService {
+  htmlBody?: string;
+  textBody?: string;
+  fromAddress?: Address;
   toAddress: AddressCollection;
   ccAddress: AddressCollection;
   bccAddress: AddressCollection;
-  subjectLine: string;
-  templateId: string;
-  templateData: Map<string, string>;
+  subjectLine?: string;
+  templateId?: string;
+  templateData?: Map<string, string>;
   customHeaders: HeaderCollection;
   attachments: AttachmentCollection;
   inlines: AttachmentCollection;
   constructor() {
     super("email/send");
-    [
-      "toAddress",
-      "ccAddress",
-      "bccAddress",
-      "customHeaders",
-      "attachments",
-      "inlines",
-    ].forEach((item) => (this[item as keyof ICollections] = []));
+    this.toAddress = [];
+    this.ccAddress = [];
+    this.bccAddress = [];
+    this.customHeaders = [];
+    this.attachments = [];
+    this.inlines = [];
   }
+  
+  abstract attach(attachment: Attachment | AttachmentCollection | string | File): this;
+  abstract inline(cid: string, filepath: string|File): this;
+
   addAddress(address: Address, type?: AddressType) {
     switch (type) {
       case "cc":
@@ -95,7 +97,7 @@ export default class mailService extends SMTP2GOService {
   }
   _addAddressOfType(emailAddress: Address | AddressCollection, t: AddressType) {
     if (Array.isArray(emailAddress)) {
-      emailAddress.map((address) => this.addAddress(address, t));
+      emailAddress.forEach((address) => this.addAddress(address, t));
     } else {
       this.addAddress(emailAddress, t);
     }
@@ -113,22 +115,7 @@ export default class mailService extends SMTP2GOService {
     this.subjectLine = subject;
     return this;
   }
-  attach(attachment: Attachment | AttachmentCollection | string): this {
-    if (typeof attachment === "string") {
-      this.attachments.push(new MailAttachment(attachment));
-    } else if (Array.isArray(attachment)) {
-      this.attachments.push(...attachment);
-    } else {
-      this.attachments.push(attachment);
-    }
-    return this;
-  }
-  inline(cid: string, filepath: string): this {
-    const inlineAttachment = new MailAttachment(filepath);
-    inlineAttachment.filename = cid;
-    this.inlines.push(inlineAttachment);
-    return this;
-  }
+  
   getFormattedAddresses(type: AddressType): Array<string> {
     return this[type + "Address" as keyof IAddressTypes].map(this.formatAddress);
   }
@@ -137,56 +124,57 @@ export default class mailService extends SMTP2GOService {
       ? `${address.name} <${address.email}>`.trim()
       : `<${address.email}>`.trim();
   }
-  async buildRequestBody(): Promise<Record<string, string | boolean>> {
-    this.requestBody = new Map();
-    this.requestBody.set("html_body", this.htmlBody);
+  async buildRequestBody(): Promise<RequestBody> {
+    const requestBody: RequestBodyMap = new Map();
+    this.requestBody = requestBody;
+    requestBody.set("html_body", this.htmlBody);
     if (this.textBody) {
-      this.requestBody.set("text_body", this.textBody || "");
+      requestBody.set("text_body", this.textBody || "");
     }
     if (this.toAddress.length) {
-      this.requestBody.set("to", this.getFormattedAddresses("to"));
+      requestBody.set("to", this.getFormattedAddresses("to"));
     } else {
       throw Error('At least one "to" address is required.');
     }
     if (this.ccAddress.length) {
-      this.requestBody.set("cc", this.getFormattedAddresses("cc"));
+      requestBody.set("cc", this.getFormattedAddresses("cc"));
     }
     if (this.bccAddress.length) {
-      this.requestBody.set("bcc", this.getFormattedAddresses("bcc"));
+      requestBody.set("bcc", this.getFormattedAddresses("bcc"));
     }
 
     if (this.fromAddress?.email) {
-      this.requestBody.set("sender", this.formatAddress(this.fromAddress));
+      requestBody.set("sender", this.formatAddress(this.fromAddress));
     } else {
       throw Error("A from email address is required.");
     }
 
-    this.requestBody.set("subject", this.subjectLine);
+    requestBody.set("subject", this.subjectLine);
 
     if (this.customHeaders.length) {
-      this.requestBody.set("custom_headers", this.customHeaders);
+      requestBody.set("custom_headers", this.customHeaders);
     }
 
     if (this.templateId) {
-      this.requestBody.set("template_id", this.templateId);
+      requestBody.set("template_id", this.templateId);
     }
-    if (this.templateData?.size > 0) {
-      this.requestBody.set("template_data", Object.fromEntries(this.templateData));
+    if (this.templateData && this.templateData.size > 0) {
+      requestBody.set("template_data", Object.fromEntries(this.templateData));
     }
 
     if (this.attachments.length || this.inlines.length) {
       const promises: any[] = [];
       ["attachments", "inlines"].forEach((attachmentType) => {
-        this[attachmentType as keyof IAttachmentTypes].forEach((attachment: MailAttachment) => {
+        this[attachmentType as keyof IAttachmentTypes].forEach((attachment: Attachment) => {
           promises.push(attachment.readFileBlob());
         });
       });
       await Promise.all(promises).then(() => {
         ["attachments", "inlines"].forEach((attachmentType) => {
           if (this[attachmentType as keyof ICollections].length) {
-            this.requestBody.set(
+            requestBody.set(
               attachmentType,
-              this[attachmentType as keyof IAttachmentTypes].map((attachment: MailAttachment) =>
+              this[attachmentType as keyof IAttachmentTypes].map((attachment: Attachment) =>
                 attachment.forSend()
               )
             );

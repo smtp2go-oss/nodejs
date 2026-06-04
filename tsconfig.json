@@ -2,8 +2,8 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "outDir": "build",
-    "module": "esnext",
-    "target": "es5",
+    "module": "preserve",
+    "target": "es2019",
     "allowJs": true,
     "sourceMap": true,
     "declaration": true,
@@ -12,15 +12,20 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "lib": [
-      "es2019"
+    "types": [
+      "node",
+      "jest"
     ],
-    "moduleResolution": "node",
+    "lib": [
+      "es2019",
+      "WebWorker"
+    ],
+    "moduleResolution": "bundler",
   },
   "include": [
-    "src/lib",
+    "src/lib/**/*",
   ],
   "exclude": [
     "src/lib/**/tests"
-  ],
+  ]
 }

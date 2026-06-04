@@ -1,4 +1,5 @@
 import {Method} from 'axios';
+import { RequestBody } from './types/requestBody';
 interface BuildsRequest {
     /**
      * Returns the HTTP Request Method Used for the endpoint GET|POST|PUT etc
@@ -19,7 +20,7 @@ interface BuildsRequest {
      *
      * @return object
      */
-     buildRequestBody(): Promise<Record<string, string | boolean>>;
+     buildRequestBody(): Promise<RequestBody>;
 
 }
 export default BuildsRequest;

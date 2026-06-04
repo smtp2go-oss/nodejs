@@ -1,2 +1,2 @@
-import Attachment from "./attachment";
+import {Attachment} from "./attachment";
 export type AttachmentCollection = Array<Attachment>

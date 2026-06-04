@@ -1,12 +1,13 @@
-require('dotenv').config();
-const SMTP2GOApi = require('../../build/index.js').default;
+import 'dotenv/config';
+import SMTP2GOApi from 'smtp2go-nodejs';
 
-const api = SMTP2GOApi(process.env.APIKEY);
+const api = SMTP2GOApi(process.env.APIKEY!);
 
 const mailService = api.mail()
-    .to({ email: process.env.TO_EMAIL, name: "Recipient" })
-    .from({ email: process.env.FROM_EMAIL, name: "Sender" })
+    .to({ email: process.env.TO_EMAIL!, name: "Recipient" })
+    .from({ email: process.env.FROM_EMAIL!, name: "Sender" })
     .subject('Testing')
+    // .cc({ email: process.env.CC_EMAIL!, name: "CC Recipient" })
    .template("6040276", new Map([
         ["username", "Steve"],
         ["product_name", "Widgets"],

@@ -1,4 +1,5 @@
-import { MailService } from '../index';
+import { it, expect } from '@jest/globals';
+import { NodeMailService as MailService } from '../index';
 import SMTP2GOApi from '../index';
 
 it('Adds an address', () => {
@@ -62,9 +63,10 @@ it('Builds an email request', async () => {
         .cc({ email: 'bob@smith.com' })
         .from({ email: 'sender@test.nz' })
         .subject('Testing')
-        .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>')
-        .attach(require('path').resolve(__dirname, './files/test.txt'))
-        .inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'))
+        .html('<h1>Hello World</h1><img src="cid:a-cat"/><p>This is a test html email!</p>');
+
+    mail.attach(require('path').resolve(__dirname, './files/test.txt'))
+    mail.inline('a-cat', require('path').resolve(__dirname, './files/cat.jpg'))
 
     const requestBody = await mail.buildRequestBody();
     expect(requestBody).toHaveProperty('html_body');
@@ -73,6 +75,69 @@ it('Builds an email request', async () => {
     expect(requestBody).toHaveProperty('attachments');
     expect(requestBody).toHaveProperty('inlines');
 
+});
+
+it('Includes text_body in request when set', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing')
+        .html('<p>Hello</p>')
+        .text('Hello');
+    const requestBody = await mail.buildRequestBody();
+    expect(requestBody).toHaveProperty('text_body', 'Hello');
+});
+
+it('Includes cc and bcc in request body when set', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .cc({ email: 'cc@test.nz' })
+        .bcc({ email: 'bcc@test.nz' })
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing')
+        .html('<p>Hello</p>');
+    const requestBody = await mail.buildRequestBody();
+    expect(requestBody).toHaveProperty('cc');
+    expect(requestBody).toHaveProperty('bcc');
+});
+
+it('Includes custom_headers in request body when set', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing')
+        .html('<p>Hello</p>')
+        .headers([{ header: 'X-FOO', value: 'bar' }, { header: 'X-BAZ', value: 'qux' }]);
+    const requestBody = await mail.buildRequestBody();
+    expect(requestBody).toHaveProperty('custom_headers');
+});
+
+it('Throws when no "to" address is set', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing')
+        .html('<p>Hello</p>');
+    await expect(mail.buildRequestBody()).rejects.toThrow('At least one "to" address is required.');
+});
+
+it('Throws when no "from" address is set', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .subject('Testing')
+        .html('<p>Hello</p>');
+    await expect(mail.buildRequestBody()).rejects.toThrow('A from email address is required.');
+});
+
+it('Accepts an array of attachments', async () => {
+    const mail = SMTP2GOApi("API-KEY").mail()
+        .to({ email: 'nobody@nowhere.com' })
+        .from({ email: 'sender@test.nz' })
+        .subject('Testing')
+        .html('<p>Hello</p>');
+    const txtPath = require('path').resolve(__dirname, '../tests/files/test.txt');
+    const jpgPath = require('path').resolve(__dirname, '../tests/files/cat.jpg');
+    await mail.attach([txtPath, jpgPath]);
+    expect(mail.attachments.length).toBe(2);
 });
 
 it('Builds an email using a template', async () => {

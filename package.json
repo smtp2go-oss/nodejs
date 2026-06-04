@@ -1,10 +1,10 @@
 {
   "name": "smtp2go-nodejs",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "types": "./build/src/lib/index.d.ts",
   "description": "NodeJS Library for interacting with the SMTP2GO API",
-  "main": "./build/index.node.js",
+  "main": "./build/index.node.cjs",
   "browser": "./build/index.browser.js",
   "sideEffects": false,
   "exports": {
@@ -16,6 +16,7 @@
       "browser": {
         "default": "./build/index.browser.js"
       },
+      "require": "./build/index.node.cjs",
       "import": "./build/index.node.js",
       "default": "./build/index.node.js"
     }
